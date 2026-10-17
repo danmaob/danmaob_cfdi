@@ -1,0 +1,23 @@
+# Compilacion
+bin/
+obj/
+TestResults/
+
+# IDE
+.vs/
+.idea/
+*.user
+*.suo
+
+# macOS
+.DS_Store
+
+# Certificados, llaves y secretos: nunca al repositorio
+*.key
+*.cer
+*.pfx
+*.p12
+*.pem
+*.pubxml.user
+.env
+*.env
