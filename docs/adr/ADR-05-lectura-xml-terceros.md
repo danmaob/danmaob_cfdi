@@ -22,14 +22,14 @@ El alcance ya está decidido:
 
 El XML viene de sistemas ajenos y se trata como contenido no confiable: DTD y entidades externas deshabilitadas, y validación estructural antes de usar cualquier dato (instrucciones, sección 4). Ningún mensaje de error ni registro expone datos fiscales completos innecesarios (sección 8).
 
-Los esquemas de CFDI 4.0, Pagos 2.0, Carta Porte 3.1 y Timbre Fiscal Digital 1.1 ya están en el juego local (ADR-03). El acuse de cancelación no tiene XSD en ese juego. La documentación de PAX muestra este acuse como respuesta de su servicio de cancelación:
+Los esquemas de CFDI 4.0, Pagos 2.0, Carta Porte 3.1 y Timbre Fiscal Digital 1.1 ya están en el juego local (ADR-03). El acuse de cancelación no tiene XSD en ese juego. La documentación del Web Service de cancelación de PAX muestra este acuse dentro de la respuesta del método `fnCancelarXML20`, el mismo que usaba CFDIAPI40:
 
 | Parte | Contenido |
 | --- | --- |
 | Elemento raíz | `Cancelacion`, en el namespace `http://cancelacfd.sat.gob.mx` |
 | Atributos de la raíz | `RfcEmisor` y `Fecha` |
 | Elementos hijos | Uno o más `Folios`, cada uno con `UUID`, `UUIDEstatus`, `UUIDdescripcion` y `UUIDfecha`; y un `Signature` |
-| Particularidades | Algunos valores del ejemplo terminan con un espacio (por ejemplo `201 `) |
+| Particularidades | Algunos valores traen espacios al inicio o al final (por ejemplo `201 ` o `RfcEmisor=" MAG041126GT8"`) |
 
 El acuse que sube el cliente lo genera su sistema actual, que puede usar otro PAC o el servicio del SAT con una forma distinta.
 
@@ -96,7 +96,18 @@ No existe un XSD oficial del acuse en el juego local. Se valida con una **verifi
 | `Signature` | Se ignora: la lectura no verifica sellos (D-30) |
 
 - A los valores de esos atributos y elementos se les quitan los espacios al inicio y al final. En UUID, códigos y fechas esto no cambia el significado.
-- El componente entrega el código de estatus y su descripción **tal como vienen**, sin interpretarlos. Qué códigos significan "cancelado" es una regla del SAT; la expectativa es 201 y 202, pendiente de confirmar con la documentación de PAX (TK-09-1). Mientras tanto, el producto decide con el código.
+- El componente entrega el código de estatus y su descripción **tal como vienen**, sin interpretarlos. El producto decide qué hacer con cada código.
+- Según la tabla de códigos del Web Service de cancelación de PAX:
+
+| Código | Significado según PAX |
+| --- | --- |
+| 201 | UUID cancelado sin aceptación |
+| 202 | UUID con aceptación en proceso: **todavía no está cancelado** |
+| 203 | UUID previamente cancelado |
+| 103 | Cancelado previamente por aceptación del receptor |
+| 107 | Cancelado por plazo vencido |
+
+- El significado definitivo de cada código se confirma con PAX al firmar el nuevo contrato (TK-09-1).
 - Un XML de cancelación con otra raíz o en otro namespace se reporta como no reconocido, sin fallar.
 - Antes del paquete de TS-02-9, Luis comparte los nombres de elementos y atributos de un acuse real del primer cliente, sin valores. Si su forma es distinta, se agrega como segunda variante en ese mismo paquete, sin cambiar el modelo de lectura.
 
@@ -163,7 +174,7 @@ Toda lectura devuelve un resultado con uno de cinco estados:
 | Rechazar comprobantes con complementos fuera del alcance | Un CFDI con, por ejemplo, Comercio Exterior es válido y su parte de CFDI le sirve al TMS |
 | Extraer la parte de CFDI de un documento con Carta Porte 3.0 | Contradice D-28. El primer cliente no tiene comprobantes anteriores a 2025 |
 | Rechazar el acuse por no tener XSD oficial | Dejaría sin cubrir la evidencia de cancelación (D-29) |
-| Interpretar los códigos de estatus de cancelación | Sería inventar una regla del SAT sin la documentación de PAX |
+| Interpretar los códigos de estatus de cancelación | El significado lo fija el SAT y lo documenta PAX, pero falta confirmarlo con el nuevo contrato; mientras tanto, el producto decide con el código |
 | Recibir el XML como texto | La codificación ya decodificada podría no coincidir con la que declara el archivo |
 | Límites configurables por el producto | Configuración sin necesidad demostrada |
 | Métodos asíncronos | No hay entrada ni salida que esperar |
@@ -193,3 +204,9 @@ Toda lectura devuelve un resultado con uno de cinco estados:
 | TS-02-4 a TS-02-8 | Modelo de lectura y extracción (sección 5) |
 | TS-02-9 | Acuse de cancelación (sección 4) |
 | TS-02-10 | Servicio de descripciones (sección 7) |
+
+## Historial de cambios
+
+| Fecha | Cambio |
+| --- | --- |
+| 19 de octubre de 2026 | Corrección según la documentación del Web Service de cancelación de PAX: el contexto identifica el acuse como respuesta de `fnCancelarXML20` y registra espacios al inicio y al final de los valores; la sección 4 reemplaza la expectativa equivocada "201 y 202" por la tabla de códigos de PAX (202 significa aceptación en proceso, no cancelado). La decisión no cambia: el componente sigue entregando el código sin interpretarlo |
