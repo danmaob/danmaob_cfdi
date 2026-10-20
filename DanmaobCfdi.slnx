@@ -4,4 +4,7 @@
         <Project Path="src/DanmaobCfdi.Catalogs/DanmaobCfdi.Catalogs.csproj" />
         <Project Path="src/DanmaobCfdi.Pax/DanmaobCfdi.Pax.csproj" />
     </Folder>
+    <Folder Name="/tests/">
+        <Project Path="tests/DanmaobCfdi.Tests/DanmaobCfdi.Tests.csproj" />
+    </Folder>
 </Solution>
