@@ -1,3 +1,7 @@
+using System;
+using System.IO;
+using System.Text;
+using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Xsl;
 using DanmaobCfdi.Core.Resources;
@@ -48,5 +52,18 @@ public sealed class SatCompiledResourcesTests
         Assert.Same(first, second);
         Assert.True(first.IsCompiled);
         Assert.True(first.Contains("http://www.sat.gob.mx/esquemas/retencionpago/2"));
+    }
+
+    [Fact]
+    public void CfdiOriginalStringTransform_ReferenceCfdi_MatchesXsltproc()
+    {
+        string folder = Path.Combine(AppContext.BaseDirectory, "Fixtures", "Cfdi40");
+        string expected = File.ReadAllText(Path.Combine(folder, "ingreso-basico.cadena.txt"), Encoding.UTF8);
+        XmlReaderSettings settings = new XmlReaderSettings();
+        settings.DtdProcessing = DtdProcessing.Prohibit;
+        using XmlReader reader = XmlReader.Create(Path.Combine(folder, "ingreso-basico.xml"), settings);
+        using StringWriter writer = new StringWriter();
+        Shared.CfdiOriginalStringTransform.Transform(reader, null, writer);
+        Assert.Equal(expected, writer.ToString());
     }
 }
