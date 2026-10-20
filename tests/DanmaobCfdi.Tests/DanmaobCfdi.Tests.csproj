@@ -10,4 +10,7 @@
         <ProjectReference Include="..\..\src\DanmaobCfdi.Catalogs\DanmaobCfdi.Catalogs.csproj" />
         <ProjectReference Include="..\..\src\DanmaobCfdi.Pax\DanmaobCfdi.Pax.csproj" />
     </ItemGroup>
+    <ItemGroup>
+        <AssemblyMetadata Include="ExpectedComponentVersion" Value="$(Version)" />
+    </ItemGroup>
 </Project>
