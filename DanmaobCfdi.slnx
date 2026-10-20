@@ -1,0 +1,5 @@
+<Solution>
+    <Folder Name="/src/">
+        <Project Path="src/DanmaobCfdi.Core/DanmaobCfdi.Core.csproj" />
+    </Folder>
+</Solution>
