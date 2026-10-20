@@ -5,4 +5,7 @@
     <ItemGroup>
         <InternalsVisibleTo Include="DanmaobCfdi.Tests" />
     </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="SatResources/**/*.xsd;SatResources/**/*.xslt" LogicalName="$([System.String]::Copy('%(RecursiveDir)%(Filename)%(Extension)').Replace('\','/'))" />
+    </ItemGroup>
 </Project>
