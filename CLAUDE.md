@@ -197,3 +197,10 @@ DANMAOB_CFDI is the fiscal component of DANMAOB: a .NET 10 class library, withou
 - Build and test always from `Net/`: `dotnet build DanmaobCfdi.slnx` and `dotnet test DanmaobCfdi.slnx`.
 - SQL Server runs in Docker and is normally off. Never run a command that needs the database. Never run `dotnet ef` unless a prompt gives the exact command, and never run `dotnet ef database update`.
 - No network access is needed: every package is already in the local NuGet cache, and SAT files are resolved locally, never from the internet.
+
+## 12. Component version (verified)
+
+- `DanmaobCfdi.Core.ComponentVersion.Current` (`src/DanmaobCfdi.Core/ComponentVersion.cs`) is the only way to read the component version at run time. It returns the informational version of the `DanmaobCfdi.Core` assembly, which is exactly the `Version` property of `src/Directory.Build.props`, without a commit hash.
+- Never write the version number in code or in tests.
+- The test project receives the same value as the assembly metadata `ExpectedComponentVersion`, declared by an `AssemblyMetadata` item with the value `$(Version)` in `tests/DanmaobCfdi.Tests/DanmaobCfdi.Tests.csproj`. Tests compare against it, so they keep passing when the version changes.
+- With `Version` `X.Y.Z` or `X.Y.Z-dev`, the assembly version and the file version are `X.Y.Z.0`. They are never declared in a project file.
