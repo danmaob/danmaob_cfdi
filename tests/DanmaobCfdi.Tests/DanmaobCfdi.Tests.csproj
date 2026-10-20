@@ -13,4 +13,7 @@
     <ItemGroup>
         <AssemblyMetadata Include="ExpectedComponentVersion" Value="$(Version)" />
     </ItemGroup>
+    <ItemGroup>
+        <None Include="..\..\src\DanmaobCfdi.Core\SatResources\SHA256SUMS" Link="SatResources\SHA256SUMS" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
 </Project>
