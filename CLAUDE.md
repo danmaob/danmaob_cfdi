@@ -204,3 +204,11 @@ DANMAOB_CFDI is the fiscal component of DANMAOB: a .NET 10 class library, withou
 - Never write the version number in code or in tests.
 - The test project receives the same value as the assembly metadata `ExpectedComponentVersion`, declared by an `AssemblyMetadata` item with the value `$(Version)` in `tests/DanmaobCfdi.Tests/DanmaobCfdi.Tests.csproj`. Tests compare against it, so they keep passing when the version changes.
 - With `Version` `X.Y.Z` or `X.Y.Z-dev`, the assembly version and the file version are `X.Y.Z.0`. They are never declared in a project file.
+
+## 13. SAT resources (verified)
+
+- `src/DanmaobCfdi.Core/SatResources/` holds the 60 official SAT files (`.xsd` and `.xslt`) downloaded on 2026-10-16, byte for byte identical to the published ones. Many of them have CRLF line endings or a BOM: that is how the SAT publishes them, and `src/.gitattributes` keeps them unchanged.
+- Each file lives at the path of its official address without the scheme and the domain: `http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd` is `SatResources/sitio_internet/cfd/4/cfdv40.xsd`. Every address that a file includes or imports has its local file.
+- Entry files (no other file includes them): `sitio_internet/cfd/4/cadenaoriginal_4_0/cadenaoriginal_4_0.xslt` (includes 33 stylesheets), `sitio_internet/cfd/4/cfdv40.xsd`, `sitio_internet/cfd/Pagos/Pagos20.xsd`, `sitio_internet/cfd/CartaPorte/CartaPorte31.xsd`, `sitio_internet/cfd/implocal/implocal.xsd`, `sitio_internet/cfd/leyendasFiscales/leyendasFisc.xsd`, `sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd`, `esquemas/retencionpago/2/retencionpagov2.xsd` and `esquemas/retencionpago/2/retenciones.xslt` (includes 13 stylesheets).
+- `SatResources/SHA256SUMS`: the first line is `# juego SAT 2026-10-16`; every other line has the format of `shasum -a 256`, with the path relative to `SatResources/`. The user's copy script generates it. Never edit it.
+- Never open, list the content of, or modify these files. A prompt gives you their paths and, when needed, the facts about them.
