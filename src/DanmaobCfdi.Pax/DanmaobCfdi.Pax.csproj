@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <ProjectReference Include="..\DanmaobCfdi.Core\DanmaobCfdi.Core.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="DanmaobCfdi.Tests" />
+    </ItemGroup>
+</Project>

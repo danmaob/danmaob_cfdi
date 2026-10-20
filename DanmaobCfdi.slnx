@@ -2,5 +2,6 @@
     <Folder Name="/src/">
         <Project Path="src/DanmaobCfdi.Core/DanmaobCfdi.Core.csproj" />
         <Project Path="src/DanmaobCfdi.Catalogs/DanmaobCfdi.Catalogs.csproj" />
+        <Project Path="src/DanmaobCfdi.Pax/DanmaobCfdi.Pax.csproj" />
     </Folder>
 </Solution>
