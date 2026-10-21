@@ -208,3 +208,9 @@ El componente ofrece estas verificaciones:
 | TS-03-6 | Vigencia a una fecha (secciones 4 y 7) |
 | TS-03-7 | Relaciones (sección 8) |
 | SP-04-1 | Tabla de versiones y reporte de huérfanos (secciones 6 y 8) |
+
+## Historial de cambios
+
+| Fecha | Cambio |
+| --- | --- |
+| 21 de octubre de 2026 | Precisión por el ADR-09 (sección 6): `c_Moneda` se agrega a la sección 5, con `Decimales` como entero y `PorcentajeVariacion` como `decimal`, y con una consulta específica que devuelve esos datos. El servicio de cálculos recibe los decimales de la moneda como parámetro; el servicio de emisión los obtiene con esa consulta |
