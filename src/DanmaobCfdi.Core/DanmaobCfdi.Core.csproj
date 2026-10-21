@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.12" />
+    </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="DanmaobCfdi.Tests" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="SatResources/**/*.xsd;SatResources/**/*.xslt" LogicalName="$([System.String]::Copy('%(RecursiveDir)%(Filename)%(Extension)').Replace('\','/'))" />
+    </ItemGroup>
+</Project>

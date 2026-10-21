@@ -21,3 +21,7 @@ TestResults/
 *.pubxml.user
 .env
 *.env
+
+# CSD públicos de pruebas del SAT (ADR-04, sección 5): única excepción
+!tests/DanmaobCfdi.Tests/Fixtures/Csd/*.cer
+!tests/DanmaobCfdi.Tests/Fixtures/Csd/*.key
