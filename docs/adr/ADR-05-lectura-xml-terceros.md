@@ -52,6 +52,9 @@ El acuse que sube el cliente lo genera su sistema actual, que puede usar otro PA
 1. Después de la lectura de seguridad, el XML se carga **una sola vez** en un `XDocument`, con la misma configuración segura y conservando los números de línea.
 2. Sobre ese árbol se detectan el tipo y la versión (sección 3).
 3. Un documento soportado se valida contra el conjunto de esquemas que le corresponde (ADR-03). Para CFDI es el conjunto de CFDI, que ya incluye Pagos 2.0, Carta Porte 3.1, impuestos locales, leyendas fiscales y el Timbre Fiscal Digital 1.1.
+   - Los comodines de `cfdi:ComplementoConcepto`, `cfdi:Complemento` y `cfdi:Addenda` son estrictos en `cfdv40.xsd`: sus `xs:any` no declaran `processContents`, y el valor por omisión es `strict`. Por eso la validación **ignora los errores que nacen dentro de un elemento hijo directo de esos tres puntos de extensión cuyo namespace no tiene esquema en el conjunto**: un complemento fuera del alcance o una addenda. Equivale a `lax` solo en esos comodines, sin modificar los XSD oficiales (ADR-03).
+   - Todo lo demás cuenta como error, incluidos los complementos con esquema (Timbre Fiscal Digital, Pagos 2.0, Carta Porte 3.1, impuestos locales y leyendas fiscales). Las advertencias del validador no cuentan.
+   - Se reúnen como máximo **100 errores**. Cada uno trae su número de línea y su posición, tomados del nodo que lo causó, y el mensaje del validador tal como viene. El mensaje puede incluir el valor inválido: el producto lo recibe en el resultado y el componente nunca lo escribe en un registro.
 4. La validación reúne **todos** los errores estructurales, no solo el primero, cada uno con su número de línea.
 5. Los datos se extraen solo si la validación pasó.
 
@@ -210,3 +213,4 @@ Toda lectura devuelve un resultado con uno de cinco estados:
 | Fecha | Cambio |
 | --- | --- |
 | 19 de octubre de 2026 | Corrección según la documentación del Web Service de cancelación de PAX: el contexto identifica el acuse como respuesta de `fnCancelarXML20` y registra espacios al inicio y al final de los valores; la sección 4 reemplaza la expectativa equivocada "201 y 202" por la tabla de códigos de PAX (202 significa aceptación en proceso, no cancelado). La decisión no cambia: el componente sigue entregando el código sin interpretarlo |
+| 21 de octubre de 2026 | Precisión por TS-02-2: los `xs:any` de `cfdv40.xsd` (líneas 395, 678 y 688 de la versión local) no declaran `processContents` y son estrictos. Se agregan a la sección 2, punto 3, la regla que ignora los errores dentro de complementos y addendas sin esquema, el límite de 100 errores y el tratamiento del mensaje. Sin esta regla, un CFDI con addenda o con un complemento fuera del alcance resultaría `Invalid`, en contra de la tabla de la sección 3 |
