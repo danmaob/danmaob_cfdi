@@ -159,7 +159,7 @@ DANMAOB_CFDI is the fiscal component of DANMAOB: a .NET 10 class library, withou
 | Project | May reference |
 |---|---|
 | `DanmaobCfdi.Core` | Only .NET and the abstractions of `Microsoft.Extensions` (`DependencyInjection.Abstractions`, `Options`, `Logging.Abstractions`) |
-| `DanmaobCfdi.Catalogs` | `DanmaobCfdi.Core` and EF Core with SQL Server |
+| `DanmaobCfdi.Catalogs` | `DanmaobCfdi.Core`, EF Core with SQL Server and the pinned `System.Security.Cryptography.Pkcs` (section 16) |
 | `DanmaobCfdi.Pax` | `DanmaobCfdi.Core` and the PAC client packages |
 | `DanmaobCfdi.Tests` | The three production projects, xUnit and NetArchTest.Rules |
 
@@ -232,7 +232,7 @@ DANMAOB_CFDI is the fiscal component of DANMAOB: a .NET 10 class library, withou
 
 ## 16. SAT catalog persistence (verified)
 
-- `DanmaobCfdi.Catalogs` references `Microsoft.EntityFrameworkCore.SqlServer` 10.0.12 and `Microsoft.EntityFrameworkCore.Design` 10.0.12 (`PrivateAssets="all"`). The global tool `dotnet ef` is version 10.0.12.
+- `DanmaobCfdi.Catalogs` references `Microsoft.EntityFrameworkCore.SqlServer` 10.0.12, `Microsoft.EntityFrameworkCore.Design` 10.0.12 (`PrivateAssets="all"`) and `System.Security.Cryptography.Pkcs` 10.0.13. The last one is a direct pin: EF Core brings version 9.0.11 transitively, and every version up to 10.0.12 has known vulnerabilities (GHSA-846f-f764-76mx, GHSA-2fmv-rv2c-59x7); 10.0.13 is the first patched version of the 10.0 line. Never remove it or change its version unless a prompt says so. The global tool `dotnet ef` is version 10.0.12.
 - `src/DanmaobCfdi.Catalogs/Persistence/` holds the persistence of the SAT catalogs, namespace `DanmaobCfdi.Catalogs.Persistence`, every type `internal`:
     - `SatDbContext` (`internal const string Schema = "sat"`): default schema `sat`, no `DbSet` properties (queries use `Set<T>()`), and `OnModelCreating` applies every `IEntityTypeConfiguration` of the assembly with `ApplyConfigurationsFromAssembly`. A new table is added with its entity and its configuration class; `SatDbContext` is never modified for that.
     - `SatDbContextOptions.Configure(DbContextOptionsBuilder builder, string connectionString)`: SQL Server with the migration history in `sat.__EFMigrationsHistory`. It is the only place where SQL Server is configured.
@@ -242,3 +242,15 @@ DANMAOB_CFDI is the fiscal component of DANMAOB: a .NET 10 class library, withou
 - Migrations live in `src/DanmaobCfdi.Catalogs/Persistence/Migrations/` (generated code; never edited by hand). They are generated with: `DANMAOB_CFDI_SAT_CONNECTION="Server=localhost;Database=DanmaobCfdi;TrustServerCertificate=True" dotnet ef migrations add <Name> --project src/DanmaobCfdi.Catalogs/DanmaobCfdi.Catalogs.csproj --startup-project src/DanmaobCfdi.Catalogs/DanmaobCfdi.Catalogs.csproj --output-dir Persistence/Migrations`, from `Net/`, only when a prompt says so. `migrations add` never connects to the database. `dotnet ef database update` is run only by the user, with Docker on.
 - The local development database of the component is `DanmaobCfdi`, in the user's SQL Server container.
 - Tests never connect to the database: they build the model with `UseSqlServer` and a connection string without credentials, and read it with `GetRelationalModel()`.
+
+## 17. Secure loading of third-party XML (verified)
+
+- `src/DanmaobCfdi.Core/Reading/` holds the reading of third-party XML (ADR-05), namespace `DanmaobCfdi.Core.Reading`. What depends on a SAT version goes in the subfolders `Cfdi40`, `Pagos20`, `CartaPorte31`, `Tfd11` and `Cancelacion`; what does not depend on a version stays in `Reading/` itself.
+- `RejectionReason` (`public enum`): `TooLarge = 1`, `DtdOrEntity = 2`, `TooDeep = 3`, `InvalidEncoding = 4`, `Malformed = 5`. Its values never change: it will be part of the public reading result.
+- `SecureXmlLoadResult` (`internal sealed`): properties `Document` (`XDocument?`), `Reason` (`RejectionReason?`) and `IsLoaded` (`bool`, true when `Document` is not null). It is created only through `SecureXmlLoadResult.Loaded(XDocument document)` and `SecureXmlLoadResult.Rejected(RejectionReason reason)`; its constructor is private.
+- `SecureXmlLoader` (`internal sealed`, without state, not registered in dependency injection yet) has `internal const int MaxSizeInBytes = 10485760`, `internal const int MaxDepth = 64` and `public SecureXmlLoadResult Load(byte[] content)`. `Load` applies, in this order: more than `MaxSizeInBytes` bytes gives `TooLarge`; bytes that are not valid UTF-8 (`System.Text.Unicode.Utf8.IsValid`) give `InvalidEncoding`; a safety read node by node with `XmlReader`, without building a tree, where an XML declaration with an `encoding` other than `UTF-8` (case-insensitive) gives `InvalidEncoding` and an element at `XmlReader.Depth` 64 or more (the root is depth 0) gives `TooDeep`; finally the `XDocument` is loaded with `LoadOptions.SetLineInfo`. An `XmlException` gives `DtdOrEntity` when the bytes contain `<!DOCTYPE`, and `Malformed` otherwise.
+- Every `XmlReader` of `SecureXmlLoader` uses `DtdProcessing.Prohibit`, `XmlResolver` null and `CloseInput` true, over a read-only `MemoryStream`.
+- Third-party XML is loaded only through `SecureXmlLoader`. Never call `XDocument.Load`, `XDocument.Parse`, `XmlDocument` or `XmlReader.Create` on third-party content anywhere else, and never use `SatResourceResolver` or any other resolver for it.
+- A defective document never throws: `XmlException` is caught only inside `SecureXmlLoader`, and every defect becomes a `RejectionReason`.
+- `tests/DanmaobCfdi.Tests/Fixtures/Invalidos/` holds synthetic negative files, copied by the user's script and never edited: `con-dtd.xml` and `entidad-externa.xml` (`DtdOrEntity`), `mal-formado.xml` (`Malformed`), `declara-iso-8859-1.xml`, `utf8-invalido.xml` and `utf16.xml` (`InvalidEncoding`).
+- `tests/DanmaobCfdi.Tests/Core/Reading/SecureXmlLoaderTests.cs` builds the oversized and deeply nested documents in memory; no large file enters `Fixtures/`.
