@@ -1,6 +1,7 @@
 #!/bin/bash
 # Genera un archivo de referencia de CFDI a partir de una plantilla (ADR-04, secciones 2 y 4):
-#   <salida>.xml         el CFDI completo y sellado, validado contra el XSD con xmllint
+#   <salida>.xml         el CFDI completo y sellado, validado con xmllint contra todos los esquemas de CFDI
+#                        (esquemas-cfdi.xsd), así que puede llevar complementos soportados, como el timbre
 #   <salida>.cadena.txt  la cadena original calculada por xsltproc
 #   <salida>.sello.txt   el sello calculado por OpenSSL (SHA-256 con RSA, base 64)
 # Los valores esperados salen de herramientas ajenas a .NET, nunca del componente.
@@ -12,7 +13,7 @@ REPO="$(cd "$DIR/../.." && pwd)"
 SAT="$REPO/src/DanmaobCfdi.Core/SatResources"
 CSD="$REPO/tests/DanmaobCfdi.Tests/Fixtures/Csd"
 XSLT="$SAT/sitio_internet/cfd/4/cadenaoriginal_4_0/cadenaoriginal_4_0.xslt"
-XSD="$SAT/sitio_internet/cfd/4/cfdv40.xsd"
+XSD="$DIR/esquemas-cfdi.xsd"
 export XML_CATALOG_FILES="$DIR/catalogo-sat.xml"
 
 if [ $# -ne 3 ]; then echo "Uso: $0 <plantilla> <RFC> <salida sin extensión>" >&2; exit 2; fi

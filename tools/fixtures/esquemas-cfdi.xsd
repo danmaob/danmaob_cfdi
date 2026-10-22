@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Esquema envoltorio para xmllint: importa todos los esquemas que componen un CFDI 4.0 leído por el componente,
+     para que el comodín estricto de cfdi:Complemento encuentre la declaración de cada complemento soportado.
+     Las direcciones se resuelven sin red con catalogo-sat.xml. Solo lo usa generar-referencia.sh. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:import namespace="http://www.sat.gob.mx/cfd/4" schemaLocation="http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd"/>
+    <xs:import namespace="http://www.sat.gob.mx/Pagos20" schemaLocation="http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos20.xsd"/>
+    <xs:import namespace="http://www.sat.gob.mx/CartaPorte31" schemaLocation="http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte31.xsd"/>
+    <xs:import namespace="http://www.sat.gob.mx/implocal" schemaLocation="http://www.sat.gob.mx/sitio_internet/cfd/implocal/implocal.xsd"/>
+    <xs:import namespace="http://www.sat.gob.mx/leyendasFiscales" schemaLocation="http://www.sat.gob.mx/sitio_internet/cfd/leyendasFiscales/leyendasFisc.xsd"/>
+    <xs:import namespace="http://www.sat.gob.mx/TimbreFiscalDigital" schemaLocation="http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd"/>
+</xs:schema>
