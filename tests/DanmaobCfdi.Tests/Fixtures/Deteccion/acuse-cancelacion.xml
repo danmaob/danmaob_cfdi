@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Cancelacion xmlns="http://cancelacfd.sat.gob.mx" RfcEmisor="EKU9003173C9" Fecha="2026-10-16T12:00:00">
+    <Folios>
+        <UUID>6F3A2B1C-4D5E-4F60-8A7B-9C0D1E2F3A4B</UUID>
+        <UUIDEstatus>201</UUIDEstatus>
+    </Folios>
+</Cancelacion>

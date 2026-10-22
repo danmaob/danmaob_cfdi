@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" version="3.2" serie="A" folio="1" fecha="2016-05-10T10:00:00" subTotal="1000.00" total="1160.00" tipoDeComprobante="ingreso">
+    <cfdi:Emisor rfc="EKU9003173C9" nombre="ESCUELA KEMPER URGATE"/>
+</cfdi:Comprobante>

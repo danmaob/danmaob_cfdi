@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/4" Version="4.0" Serie="A" Folio="1" Fecha="2026-10-16T10:00:00" SubTotal="1000.00" Moneda="MXN" Total="1160.00" TipoDeComprobante="P" Exportacion="01" LugarExpedicion="42501">
+    <cfdi:Emisor Rfc="EKU9003173C9" Nombre="ESCUELA KEMPER URGATE" RegimenFiscal="601"/>
+    <cfdi:Receptor Rfc="WERX631016S30" Nombre="XAIME WEIR ROJO" DomicilioFiscalReceptor="06300" RegimenFiscalReceptor="625" UsoCFDI="G03"/>
+    <cfdi:Complemento>
+        <pago10:Pagos xmlns:pago10="http://www.sat.gob.mx/Pagos" Version="1.0"/>
+        <tfd:TimbreFiscalDigital xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" Version="1.1" UUID="6F3A2B1C-4D5E-4F60-8A7B-9C0D1E2F3A4B" FechaTimbrado="2026-10-16T10:01:00"/>
+    </cfdi:Complemento>
+</cfdi:Comprobante>
