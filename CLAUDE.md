@@ -254,3 +254,14 @@ DANMAOB_CFDI is the fiscal component of DANMAOB: a .NET 10 class library, withou
 - A defective document never throws: `XmlException` is caught only inside `SecureXmlLoader`, and every defect becomes a `RejectionReason`.
 - `tests/DanmaobCfdi.Tests/Fixtures/Invalidos/` holds synthetic negative files, copied by the user's script and never edited: `con-dtd.xml` and `entidad-externa.xml` (`DtdOrEntity`), `mal-formado.xml` (`Malformed`), `declara-iso-8859-1.xml`, `utf8-invalido.xml` and `utf16.xml` (`InvalidEncoding`).
 - `tests/DanmaobCfdi.Tests/Core/Reading/SecureXmlLoaderTests.cs` builds the oversized and deeply nested documents in memory; no large file enters `Fixtures/`.
+
+## 18. Structural validation of third-party XML (verified)
+
+- `StructuralError` (`public sealed`, `src/DanmaobCfdi.Core/Reading/`): properties `LineNumber` (`int`), `LinePosition` (`int`) and `Message` (`string`); its constructor is `internal`. `LineNumber` and `LinePosition` are 0 when the node has no line information.
+- `XmlStructuralValidator` (`internal sealed`, not registered in dependency injection yet) receives `SatCompiledResources` in its constructor, has `internal const int MaxErrors = 100` and `public IReadOnlyList<StructuralError> Validate(XDocument document)`. It validates against `SatCompiledResources.CfdiSchemas` only; the caller (detection, TS-02-3) guarantees that the document is a CFDI 4.0. An empty list means valid.
+- Only `XmlSeverityType.Error` events count; warnings are ignored. At most `MaxErrors` errors are collected. Line and position come from the `IXmlLineInfo` of the node that raised the event.
+- The `xs:any` wildcards of `cfd/4/cfdv40.xsd` (`ComplementoConcepto`, `Complemento`, `Addenda`) are strict. `XmlStructuralValidator` ignores every error raised inside an element that is a direct child of `cfdi:ComplementoConcepto`, `cfdi:Complemento` or `cfdi:Addenda` and whose namespace is not in the schema set (ADR-05, section 2). Never relax this further and never modify an official XSD to change it.
+- `StructuralError.Message` is the validator message as is and may contain document values: never write it to a log.
+- Fixtures of this area: `Fixtures/Cfdi40/con-extensiones-desconocidas.xml` (a Comercio Exterior complement and an addenda without schema; valid), and in `Fixtures/Invalidos/`: `atributo-fuera-del-xsd.xml` (one error, line 3), `varios-errores.xml` (two errors, lines 4 and 6) and `tfd-atributo-fuera-del-xsd.xml` (one error inside the Timbre Fiscal Digital, line 20). The user's script checks them with `xmllint` against every CFDI schema before copying them.
+- `tests/DanmaobCfdi.Tests/Core/Reading/XmlStructuralValidatorTests.cs` shares one static `XmlStructuralValidator`, because compiling the schemas takes seconds.
+- Never use `var`: every local variable is declared with its exact type.
