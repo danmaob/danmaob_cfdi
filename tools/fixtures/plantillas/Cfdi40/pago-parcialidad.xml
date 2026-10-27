@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/4" xmlns:pago20="http://www.sat.gob.mx/Pagos20" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd http://www.sat.gob.mx/Pagos20 http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos20.xsd" Version="4.0" Serie="P" Folio="77" Fecha="2026-10-20T10:00:00" Sello="{{SELLO}}" NoCertificado="{{NO_CERTIFICADO}}" Certificado="{{CERTIFICADO}}" SubTotal="0" Moneda="XXX" Total="0" TipoDeComprobante="P" Exportacion="01" LugarExpedicion="42501">
+    <cfdi:Emisor Rfc="EKU9003173C9" Nombre="ESCUELA KEMPER URGATE" RegimenFiscal="601"/>
+    <cfdi:Receptor Rfc="WERX631016S30" Nombre="XAIME WEIR ROJO" DomicilioFiscalReceptor="06300" RegimenFiscalReceptor="625" UsoCFDI="CP01"/>
+    <cfdi:Conceptos>
+        <cfdi:Concepto ClaveProdServ="84111506" Cantidad="1" ClaveUnidad="ACT" Descripcion="Pago" ValorUnitario="0" Importe="0" ObjetoImp="01"/>
+    </cfdi:Conceptos>
+    <cfdi:Complemento>
+        <pago20:Pagos Version="2.0">
+            <pago20:Totales TotalRetencionesIVA="48.00" TotalTrasladosBaseIVA16="1200.00" TotalTrasladosImpuestoIVA16="192.00" MontoTotalPagos="2264.00"/>
+            <pago20:Pago FechaPago="2026-10-20T09:30:00" FormaDePagoP="03" MonedaP="MXN" TipoCambioP="1" Monto="2264.00" NumOperacion="SPEI-0001">
+                <pago20:DoctoRelacionado IdDocumento="E3B5F1A2-7C4D-4E8F-9A1B-2C3D4E5F6A7B" Serie="F" Folio="1025" MonedaDR="MXN" EquivalenciaDR="1" NumParcialidad="1" ImpSaldoAnt="2688.00" ImpPagado="1344.00" ImpSaldoInsoluto="1344.00" ObjetoImpDR="02">
+                    <pago20:ImpuestosDR>
+                        <pago20:RetencionesDR>
+                            <pago20:RetencionDR BaseDR="1200.00" ImpuestoDR="002" TipoFactorDR="Tasa" TasaOCuotaDR="0.040000" ImporteDR="48.00"/>
+                        </pago20:RetencionesDR>
+                        <pago20:TrasladosDR>
+                            <pago20:TrasladoDR BaseDR="1200.00" ImpuestoDR="002" TipoFactorDR="Tasa" TasaOCuotaDR="0.160000" ImporteDR="192.00"/>
+                        </pago20:TrasladosDR>
+                    </pago20:ImpuestosDR>
+                </pago20:DoctoRelacionado>
+                <pago20:DoctoRelacionado IdDocumento="4C2D8E1F-6A3B-4D5C-9E7F-1A2B3C4D5E6F" Serie="F" Folio="1030" MonedaDR="USD" EquivalenciaDR="0.0543478261" NumParcialidad="1" ImpSaldoAnt="50.00" ImpPagado="50.00" ImpSaldoInsoluto="0.00" ObjetoImpDR="01"/>
+                <pago20:ImpuestosP>
+                    <pago20:RetencionesP>
+                        <pago20:RetencionP ImpuestoP="002" ImporteP="48.00"/>
+                    </pago20:RetencionesP>
+                    <pago20:TrasladosP>
+                        <pago20:TrasladoP BaseP="1200.00" ImpuestoP="002" TipoFactorP="Tasa" TasaOCuotaP="0.160000" ImporteP="192.00"/>
+                    </pago20:TrasladosP>
+                </pago20:ImpuestosP>
+            </pago20:Pago>
+        </pago20:Pagos>
+        <tfd:TimbreFiscalDigital xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" Version="1.1" UUID="7A1C9E2B-3D4F-4A5B-8C6D-0E1F2A3B4C5D" FechaTimbrado="2026-10-20T10:01:00" RfcProvCertif="SPR190613I52" SelloCFD="{{SELLO}}" NoCertificadoSAT="30001000000500003456" SelloSAT="U0VMTE8gU0FUIERFIFBSVUVCQVMgUEFSQSBEQU5NQU9CIENGREk="/>
+    </cfdi:Complemento>
+</cfdi:Comprobante>
