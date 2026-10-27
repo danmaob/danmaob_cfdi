@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DanmaobCfdi.Core.Reading.Tfd11;
 
 namespace DanmaobCfdi.Core.Reading.Cfdi40;
 
@@ -44,4 +45,6 @@ public sealed class ComprobanteData
     public IReadOnlyList<ConceptoData> Conceptos { get; internal init; } = Array.Empty<ConceptoData>();
 
     public ImpuestosData? Impuestos { get; internal init; }
+
+    public TimbreFiscalDigitalData? TimbreFiscalDigital { get; internal init; }
 }
