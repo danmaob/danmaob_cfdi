@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using DanmaobCfdi.Core.Reading.Tfd11;
 
 namespace DanmaobCfdi.Core.Reading.Cfdi40;
 
@@ -38,7 +39,8 @@ internal sealed class Cfdi40Extractor
             Emisor = ReadEmisor(RequiredChild(root, "Emisor")),
             Receptor = ReadReceptor(RequiredChild(root, "Receptor")),
             Conceptos = ReadConceptos(RequiredChild(root, "Conceptos")),
-            Impuestos = Cfdi40ImpuestosReader.ReadImpuestos(root)
+            Impuestos = Cfdi40ImpuestosReader.ReadImpuestos(root),
+            TimbreFiscalDigital = Tfd11Extractor.Extract(root)
         };
     }
 
