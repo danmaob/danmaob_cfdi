@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DanmaobCfdi.Core.Reading.Pagos20;
 using DanmaobCfdi.Core.Reading.Tfd11;
 
 namespace DanmaobCfdi.Core.Reading.Cfdi40;
@@ -47,4 +48,6 @@ public sealed class ComprobanteData
     public ImpuestosData? Impuestos { get; internal init; }
 
     public TimbreFiscalDigitalData? TimbreFiscalDigital { get; internal init; }
+
+    public PagosData? Pagos { get; internal init; }
 }
