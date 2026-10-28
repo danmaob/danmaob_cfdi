@@ -23,6 +23,257 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.Aduana", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_Aduana", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.Exportacion", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_Exportacion", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.Meses", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_Meses", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.MetodoPago", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_MetodoPago", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.MotivoCancelacion", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_MotivoCancelacion", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.ObjetoImp", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_ObjetoImp", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.PatenteAduanal", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.Property<string>("Descripcion")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_PatenteAduanal", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.Periodicidad", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_Periodicidad", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.TipoCadenaPago", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_TipoCadenaPago", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.TipoFactor", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
+                    b.Property<string>("Descripcion")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_TipoFactor", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.TipoRelacion", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_TipoRelacion", "sat");
+                });
+
             modelBuilder.Entity("DanmaobCfdi.Catalogs.Persistence.CatalogoVersion", b =>
                 {
                     b.Property<string>("Catalogo")
