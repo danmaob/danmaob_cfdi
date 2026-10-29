@@ -339,3 +339,16 @@ DANMAOB_CFDI is the fiscal component of DANMAOB: a .NET 10 class library, withou
     - `c_TasaOCuota` (does not inherit `SatCatalogEntity`): `Id` (`int` identity key), `Tipo` (10), `ValorMinimo` (`decimal(18,6)`, nullable), `ValorMaximo` (`decimal(18,6)`), `Impuesto` (50, the tax name as the Excel writes it), `Factor` (10), `Traslado` and `Retencion` (`bit`), and the validity dates as `date`; a unique index on `Tipo`, `ValorMinimo`, `ValorMaximo`, `Impuesto` and `Factor` declared with `HasFilter(null)`.
 - Every `decimal` column declares its precision with `HasPrecision`; an entity that does not inherit `SatCatalogEntity` maps its own table, key and validity dates.
 - Model tests read the design-time model (`context.GetService<IDesignTimeModel>().Model`): in `context.Model`, which is read-optimized, collations, precisions and filters are not available. `tests/DanmaobCfdi.Tests/Catalogs/Cfdi40/OwnStructureCatalogModelTests.cs` checks the eight tables.
+
+## 26. SAT catalogs: geographic and large CFDI 4.0 catalogs (verified)
+
+- `SatCatalogConfiguration` has two methods with the same five parameters: `ConfigureCatalog` (common columns AND the key `Clave`) and `ConfigureColumns` (the same common columns WITHOUT any key). A catalog with a composite key calls `ConfigureColumns` and then `HasKey` with its two column names; never call `ConfigureCatalog` and then `HasKey` again, because the first key could stay as an alternate key.
+- Migration `Cfdi40GeographicCatalogs`. Entities and configurations in `src/DanmaobCfdi.Catalogs/Cfdi40/`; key length / description length:
+    - `c_Pais` 3/100: `FormatoCodigoPostal` (50), `FormatoRegistroIdentidadTributaria` (100), `ValidacionRegistroIdentidadTributaria` (50), `Agrupaciones` (50), all nullable.
+    - Composite keys: `c_Estado` (`Clave` 3, `Pais` 3) /50; `c_Municipio` (`Clave` 3, `Estado` 3) /100; `c_Localidad` (`Clave` 2, `Estado` 3) /50; `c_Colonia` (`Clave` 4, `CodigoPostal` 5) /100.
+    - `c_CodigoPostal` 5/50 without description: `Estado` (3), `Municipio` (3, nullable), `Localidad` (2, nullable), `EstimuloFranjaFronteriza` (`tinyint`), `HusoHorario` (50), and for summer and winter `MesInicioHorario…` (20), `DiaInicioHorario…` (20), `HoraInicioHorario…` (5), nullable, and `DiferenciaHoraria…` (`int`).
+    - `c_ClaveProdServ` 8/250: `IncluirIvaTrasladado` and `IncluirIepsTrasladado` (50), `ComplementoQueDebeIncluir` (100, nullable), `EstimuloFranjaFronteriza` (`tinyint`), `PalabrasSimilares` (1000, nullable, collation `Latin1_General_100_CI_AI`).
+    - `c_ClaveUnidad` 3/250 (`Descripcion` holds the unit name): `DescripcionUnidad` (1000), `Nota` (250), `Simbolo` (50), all nullable.
+    - `c_NumPedimentoAduana` (does not inherit `SatCatalogEntity`): `Id` (`int` identity key), `Aduana` (2), `Patente` (4), `Ejercicio` and `Cantidad` (`int`), validity dates as `date`, unique index on `Aduana`, `Patente` and `Ejercicio`.
+- Relations between geographic catalogs (`c_CodigoPostal` to estado, municipio and localidad; `c_Colonia` to código postal) are plain columns without foreign keys; they are validated in code.
+- `tests/DanmaobCfdi.Tests/Catalogs/Cfdi40/GeographicCatalogModelTests.cs` checks the nine tables, including that each composite-key table has no unique key other than its primary key.
