@@ -69,6 +69,113 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.ToTable("c_Exportacion", "sat");
                 });
 
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.FormaPago", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
+                    b.Property<string>("Bancarizado")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("CuentaBeneficiario")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("CuentaOrdenante")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<string>("NombreBancoEmisorCuentaOrdenante")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("NumeroOperacion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PatronCuentaBeneficiaria")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PatronCuentaOrdenante")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RfcEmisorCuentaBeneficiario")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("RfcEmisorCuentaOrdenante")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("TipoCadenaPago")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_FormaPago", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.Impuesto", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<string>("LocalOFederal")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("Retencion")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Traslado")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_Impuesto", "sat");
+                });
+
             modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.Meses", b =>
                 {
                     b.Property<string>("Clave")
@@ -113,6 +220,36 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.HasKey("Clave");
 
                     b.ToTable("c_MetodoPago", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.Moneda", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<int>("Decimales")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<decimal?>("PorcentajeVariacion")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_Moneda", "sat");
                 });
 
             modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.MotivoCancelacion", b =>
@@ -206,6 +343,86 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.ToTable("c_Periodicidad", "sat");
                 });
 
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.RegimenFiscal", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<bool>("AplicaPersonaFisica")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AplicaPersonaMoral")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_RegimenFiscal", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.TasaOCuota", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Factor")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Impuesto")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("Retencion")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<bool>("Traslado")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("ValorMaximo")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
+
+                    b.Property<decimal?>("ValorMinimo")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Tipo", "ValorMinimo", "ValorMaximo", "Impuesto", "Factor")
+                        .IsUnique();
+
+                    b.ToTable("c_TasaOCuota", "sat");
+                });
+
             modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.TipoCadenaPago", b =>
                 {
                     b.Property<string>("Clave")
@@ -227,6 +444,33 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.HasKey("Clave");
 
                     b.ToTable("c_TipoCadenaPago", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.TipoDeComprobante", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(1)
+                        .HasColumnType("nvarchar(1)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<decimal>("ValorMaximo")
+                        .HasPrecision(24, 6)
+                        .HasColumnType("decimal(24,6)");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_TipoDeComprobante", "sat");
                 });
 
             modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.TipoFactor", b =>
@@ -274,6 +518,50 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.ToTable("c_TipoRelacion", "sat");
                 });
 
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.UsoCFDI", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.Property<bool>("AplicaPersonaFisica")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AplicaPersonaMoral")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_UsoCFDI", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.UsoCFDIRegimenFiscalReceptor", b =>
+                {
+                    b.Property<string>("UsoCFDI")
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.Property<string>("RegimenFiscal")
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.HasKey("UsoCFDI", "RegimenFiscal");
+
+                    b.ToTable("c_UsoCFDI_RegimenFiscalReceptor", "sat");
+                });
+
             modelBuilder.Entity("DanmaobCfdi.Catalogs.Persistence.CatalogoVersion", b =>
                 {
                     b.Property<string>("Catalogo")
@@ -302,6 +590,15 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.HasKey("Catalogo");
 
                     b.ToTable("CatalogoVersion", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.UsoCFDIRegimenFiscalReceptor", b =>
+                {
+                    b.HasOne("DanmaobCfdi.Catalogs.Cfdi40.UsoCFDI", null)
+                        .WithMany()
+                        .HasForeignKey("UsoCFDI")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
