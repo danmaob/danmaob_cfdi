@@ -9,8 +9,8 @@ internal sealed class UsoCFDIRegimenFiscalReceptorConfiguration : IEntityTypeCon
     {
         builder.ToTable("c_UsoCFDI_RegimenFiscalReceptor");
         builder.HasKey("UsoCFDI", "RegimenFiscal");
-        builder.Property(e => e.UsoCFDI).HasMaxLength(4);
-        builder.Property(e => e.RegimenFiscal).HasMaxLength(3);
-        builder.HasOne<UsoCFDI>().WithMany().HasForeignKey(e => e.UsoCFDI);
+        builder.Property(entity => entity.UsoCFDI).HasMaxLength(4);
+        builder.Property(entity => entity.RegimenFiscal).HasMaxLength(3);
+        builder.HasOne<UsoCFDI>().WithMany().HasForeignKey(entity => entity.UsoCFDI);
     }
 }
