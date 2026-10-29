@@ -326,3 +326,16 @@ DANMAOB_CFDI is the fiscal component of DANMAOB: a .NET 10 class library, withou
 - Simple catalogs (only the four common columns), migration `Cfdi40SimpleCatalogs`; key length and description length: `c_Aduana` 2/100, `c_Exportacion` 2/100, `c_Meses` 2/50, `c_MetodoPago` 3/50, `c_ObjetoImp` 2/100, `c_Periodicidad` 2/50, `c_TipoRelacion` 2/100, `c_MotivoCancelacion` 2/100, `c_TipoCadenaPago` 2/50, and without description (`Descripcion` nullable) `c_TipoFactor` 6/50 and `c_PatenteAduanal` 4/50.
 - Key lengths come from the enumerations of the SAT schemas; the user's database step compares them before applying a migration. Description lengths are the real maximum of the SAT Excel rounded up to 50, 100, 250, 500 or 1000.
 - `tests/DanmaobCfdi.Tests/Catalogs/Cfdi40/SimpleCatalogModelTests.cs` checks every simple catalog with `GetRelationalModel()`, and that `HasPendingModelChanges()` is false: a configuration changed without its migration fails the tests.
+
+## 25. SAT catalogs: CFDI 4.0 catalogs with their own structure (verified)
+
+- Migration `Cfdi40OwnStructureCatalogs`. Entities and configurations in `src/DanmaobCfdi.Catalogs/Cfdi40/`, `internal sealed`, with `{ get; set; }` properties; key length / description length:
+    - `c_RegimenFiscal` 3/100 and `c_UsoCFDI` 4/100: `AplicaPersonaFisica` and `AplicaPersonaMoral` (`bit`).
+    - `c_UsoCFDI_RegimenFiscalReceptor` (class `UsoCFDIRegimenFiscalReceptor`, does not inherit `SatCatalogEntity`): `UsoCFDI` (4) and `RegimenFiscal` (3), composite key by name, and the only foreign key of the schema, to `c_UsoCFDI`, without navigation properties.
+    - `c_FormaPago` 2/50: ten text columns (`Bancarizado`, `NumeroOperacion`, `RfcEmisorCuentaOrdenante`, `CuentaOrdenante`, `RfcEmisorCuentaBeneficiario`, `CuentaBeneficiario` and `TipoCadenaPago` of 50; `PatronCuentaOrdenante`, `PatronCuentaBeneficiaria` and `NombreBancoEmisorCuentaOrdenante` of 100), because they mix `Sí`, `No` and `Opcional`.
+    - `c_Moneda` 3/100: `Decimales` (`int`) and `PorcentajeVariacion` (`decimal(5,2)`, nullable).
+    - `c_Impuesto` 3/50: `Retencion` and `Traslado` (`bit`), `LocalOFederal` (50).
+    - `c_TipoDeComprobante` 1/50: `ValorMaximo` (`decimal(24,6)`); Nómina (`N`) keeps the single value shared by `NS` and `NdS`.
+    - `c_TasaOCuota` (does not inherit `SatCatalogEntity`): `Id` (`int` identity key), `Tipo` (10), `ValorMinimo` (`decimal(18,6)`, nullable), `ValorMaximo` (`decimal(18,6)`), `Impuesto` (50, the tax name as the Excel writes it), `Factor` (10), `Traslado` and `Retencion` (`bit`), and the validity dates as `date`; a unique index on `Tipo`, `ValorMinimo`, `ValorMaximo`, `Impuesto` and `Factor` declared with `HasFilter(null)`.
+- Every `decimal` column declares its precision with `HasPrecision`; an entity that does not inherit `SatCatalogEntity` maps its own table, key and validity dates.
+- Model tests read the design-time model (`context.GetService<IDesignTimeModel>().Model`): in `context.Model`, which is read-optimized, collations, precisions and filters are not available. `tests/DanmaobCfdi.Tests/Catalogs/Cfdi40/OwnStructureCatalogModelTests.cs` checks the eight tables.
