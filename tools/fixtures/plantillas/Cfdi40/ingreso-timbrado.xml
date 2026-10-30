@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd" Version="4.0" Serie="F" Folio="1025" Fecha="2026-10-16T11:30:00" Sello="{{SELLO}}" FormaPago="99" NoCertificado="{{NO_CERTIFICADO}}" Certificado="{{CERTIFICADO}}" CondicionesDePago="CREDITO A 30 DIAS" SubTotal="2500.00" Descuento="100.00" Moneda="MXN" Total="2688.00" TipoDeComprobante="I" Exportacion="01" MetodoPago="PPD" LugarExpedicion="42501">
+    <cfdi:Emisor Rfc="EKU9003173C9" Nombre="ESCUELA KEMPER URGATE" RegimenFiscal="601"/>
+    <cfdi:Receptor Rfc="WERX631016S30" Nombre="XAIME WEIR ROJO" DomicilioFiscalReceptor="06300" RegimenFiscalReceptor="625" UsoCFDI="G03"/>
+    <cfdi:Conceptos>
+        <cfdi:Concepto ClaveProdServ="78101802" NoIdentificacion="VIAJE-001" Cantidad="1" ClaveUnidad="E48" Unidad="Servicio" Descripcion="Flete Irapuato a Monterrey" ValorUnitario="2000.00" Importe="2000.00" Descuento="100.00" ObjetoImp="02">
+            <cfdi:Impuestos>
+                <cfdi:Traslados>
+                    <cfdi:Traslado Base="1900.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="304.00"/>
+                </cfdi:Traslados>
+                <cfdi:Retenciones>
+                    <cfdi:Retencion Base="1900.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.040000" Importe="76.00"/>
+                </cfdi:Retenciones>
+            </cfdi:Impuestos>
+        </cfdi:Concepto>
+        <cfdi:Concepto ClaveProdServ="78101802" Cantidad="2" ClaveUnidad="E48" Unidad="Servicio" Descripcion="Maniobras de carga y descarga" ValorUnitario="250.00" Importe="500.00" ObjetoImp="02">
+            <cfdi:Impuestos>
+                <cfdi:Traslados>
+                    <cfdi:Traslado Base="500.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="80.00"/>
+                </cfdi:Traslados>
+                <cfdi:Retenciones>
+                    <cfdi:Retencion Base="500.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.040000" Importe="20.00"/>
+                </cfdi:Retenciones>
+            </cfdi:Impuestos>
+        </cfdi:Concepto>
+    </cfdi:Conceptos>
+    <cfdi:Impuestos TotalImpuestosRetenidos="96.00" TotalImpuestosTrasladados="384.00">
+        <cfdi:Retenciones>
+            <cfdi:Retencion Impuesto="002" Importe="96.00"/>
+        </cfdi:Retenciones>
+        <cfdi:Traslados>
+            <cfdi:Traslado Base="2400.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="384.00"/>
+        </cfdi:Traslados>
+    </cfdi:Impuestos>
+    <cfdi:Complemento>
+        <tfd:TimbreFiscalDigital xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" Version="1.1" UUID="E3B5F1A2-7C4D-4E8F-9A1B-2C3D4E5F6A7B" FechaTimbrado="2026-10-16T11:31:05" RfcProvCertif="SPR190613I52" SelloCFD="{{SELLO}}" NoCertificadoSAT="30001000000500003456" SelloSAT="U0VMTE8gU0FUIERFIFBSVUVCQVMgUEFSQSBEQU5NQU9CIENGREk="/>
+    </cfdi:Complemento>
+</cfdi:Comprobante>

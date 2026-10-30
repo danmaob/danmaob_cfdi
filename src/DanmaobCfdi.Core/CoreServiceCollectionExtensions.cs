@@ -1,3 +1,5 @@
+using DanmaobCfdi.Core.Reading;
+using DanmaobCfdi.Core.Reading.Cfdi40;
 using DanmaobCfdi.Core.Resources;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,6 +11,11 @@ public static class CoreServiceCollectionExtensions
     {
         services.AddSingleton<SatResourceResolver>();
         services.AddSingleton<SatCompiledResources>();
+        services.AddSingleton<SecureXmlLoader>();
+        services.AddSingleton<DocumentDetector>();
+        services.AddSingleton<XmlStructuralValidator>();
+        services.AddSingleton<Cfdi40Extractor>();
+        services.AddSingleton<IThirdPartyXmlReader, ThirdPartyXmlReader>();
         return services;
     }
 }

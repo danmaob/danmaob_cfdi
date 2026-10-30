@@ -55,6 +55,8 @@ Los catálogos más grandes son `c_Colonia` (145 mil registros), `c_CodigoPostal
 
 Los nombres uniformes de las columnas comunes permiten una consulta genérica para cualquier catálogo.
 
+`Descripcion` admite nulo. Es obligatoria en cada catálogo cuyo Excel la trae, y queda en nulo solo en los que no traen descripción: `c_TipoFactor`, `c_PatenteAduanal` y `c_CodigoPostal`. Nunca se rellena con otro dato, como la clave. En `c_ClaveUnidad`, `Descripcion` guarda el nombre de la unidad, y la descripción propia del SAT va en otra columna.
+
 ### 3. Llaves
 
 - La llave principal es la **clave del SAT**, como texto `nvarchar` con la longitud de su XSD. Conserva los ceros a la izquierda.
@@ -68,7 +70,7 @@ Los nombres uniformes de las columnas comunes permiten una consulta genérica pa
 | `c_Estado` | País y clave |
 
 - El padre va primero en la llave, para que la misma llave sirva para buscar los hijos de un padre (por ejemplo, las colonias de un código postal).
-- Un catálogo **sin clave del SAT** (por ejemplo `c_TasaOCuota`, y probablemente `c_NumPedimentoAduana`) lleva una llave numérica propia y un índice único sobre las columnas que definen cada renglón. La lista exacta se confirma en TS-03-2 y TS-03-3 con la estructura de cada Excel (`catalogos_estructura.txt`).
+- Un catálogo **sin clave del SAT** lleva una llave numérica propia y un índice único sobre las columnas que definen cada renglón. En CFDI 4.0 son dos, confirmados con los datos del Excel: `c_TasaOCuota` y `c_NumPedimentoAduana`. Los de Carta Porte 3.1 se confirman en TS-03-3.
 
 ### 4. Vigencia
 
@@ -214,3 +216,7 @@ El componente ofrece estas verificaciones:
 | Fecha | Cambio |
 | --- | --- |
 | 21 de octubre de 2026 | Precisión por el ADR-09 (sección 6): `c_Moneda` se agrega a la sección 5, con `Decimales` como entero y `PorcentajeVariacion` como `decimal`, y con una consulta específica que devuelve esos datos. El servicio de cálculos recibe los decimales de la moneda como parámetro; el servicio de emisión los obtiene con esa consulta |
+| 27 de octubre de 2026 | Precisión por TS-03-2, con los datos del Excel de CFDI 4.0: `Descripcion` admite nulo y solo queda en nulo en `c_TipoFactor`, `c_PatenteAduanal` y `c_CodigoPostal`, que no traen descripción (sección 2); en `c_ClaveUnidad` guarda el nombre de la unidad. Se confirman los dos catálogos sin clave del SAT de CFDI 4.0, `c_TasaOCuota` y `c_NumPedimentoAduana` (sección 3) |
+| 29 de octubre de 2026 | Precisión por TS-03-2B, con los datos del Excel: `c_TasaOCuota` y la tabla hija `c_UsoCFDI_RegimenFiscalReceptor` no heredan las columnas comunes (no tienen clave del SAT ni descripción); el índice único de `c_TasaOCuota` se declara sin filtro, para que los renglones fijos (sin valor mínimo) también cuenten en la unicidad; `c_TipoDeComprobante` guarda `ValorMaximo` en `decimal(24,6)`, y el renglón sin clave del Excel es la continuación de Nómina (`NS` y `NdS` con el mismo valor), así que `N` guarda ese único valor; las columnas de `c_FormaPago` que mezclan `Sí`, `No` y `Opcional` van como texto, y `c_Impuesto` guarda `Retencion` y `Traslado` como `bit` (el Excel escribe `Si` sin acento) |
+| 29 de octubre de 2026 | Precisión por TS-03-2C, con los datos del Excel: los catálogos con llave compuesta (`c_Estado` con `Pais`; `c_Municipio` y `c_Localidad` con `Estado`; `c_Colonia` con `CodigoPostal`) mapean sus columnas comunes con `SatCatalogConfiguration.ConfigureColumns`, que no fija llave, y declaran su llave de dos columnas, para que `Clave` sola nunca quede como llave alterna; `c_CodigoPostal` guarda estado, municipio y localidad sin llave foránea, el estímulo de franja fronteriza como `tinyint` (0, 1 y 2) y los datos de horario de verano e invierno; `c_ClaveProdServ` guarda el mismo estímulo como `tinyint` y `PalabrasSimilares` con la intercalación de las descripciones; `c_ClaveUnidad` guarda la descripción propia del SAT en `DescripcionUnidad`; `c_NumPedimentoAduana` lleva `Id` con identidad e índice único sobre aduana, patente y ejercicio; `c_Pais` y `c_Municipio` llevan descripción de 100 aunque su máximo es 49 |
+| 29 de octubre de 2026 | Precisión por TS-03-3, con los datos de los Excel de Carta Porte 3.1 y de fracción arancelaria: `c_ClaveProdServCP` es un catálogo propio (48,757 claves) con `PalabrasSimilares` buscable y `MaterialPeligroso` como texto; `c_MaterialPeligroso` repite claves (2,346 renglones, 2,337 claves), así que lleva `Id` con identidad, conserva `Clave` y `Descripcion` con su intercalación y un índice no único sobre `Clave`; `c_NumAutorizacionNaviero` no trae descripción; las listas de claves en una celda (`0,1`, `01,02,03`, `02, 03 y 04`) se guardan como texto; `c_ClaveUnidadPeso` guarda la bandera en `Bandera`; la descripción de `c_FraccionArancelaria` lleva 2000 caracteres (máximo real 1,511), un tamaño que se agrega a la serie solo para ese catálogo, y `c_Estaciones` lleva descripción de 100 (máximo real 50); las vigencias "Por definir" se guardan en nulo |
