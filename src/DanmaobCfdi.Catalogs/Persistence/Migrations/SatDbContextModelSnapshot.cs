@@ -23,6 +23,39 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.ClaveProdServCP", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<string>("MaterialPeligroso")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PalabrasSimilares")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_ClaveProdServCP", "sat");
+                });
+
             modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.ClaveTipoCarga", b =>
                 {
                     b.Property<string>("Clave")
@@ -44,6 +77,79 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.HasKey("Clave");
 
                     b.ToTable("c_ClaveTipoCarga", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.ClaveUnidadPeso", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("Bandera")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<string>("DescripcionUnidad")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Nota")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Simbolo")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_ClaveUnidadPeso", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.CodigoTransporteAereo", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<string>("DesignadorOACI")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Nacionalidad")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_CodigoTransporteAereo", "sat");
                 });
 
             modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.CondicionesEspeciales", b =>
@@ -69,6 +175,41 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.ToTable("c_CondicionesEspeciales", "sat");
                 });
 
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.ConfigAutotransporte", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<int?>("NumeroEjes")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NumeroLlantas")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Remolque")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_ConfigAutotransporte", "sat");
+                });
+
             modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.ConfigMaritima", b =>
                 {
                     b.Property<string>("Clave")
@@ -90,6 +231,34 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.HasKey("Clave");
 
                     b.ToTable("c_ConfigMaritima", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.Contenedor", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<string>("TipoContenedor")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_Contenedor", "sat");
                 });
 
             modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.ContenedorMaritimo", b =>
@@ -138,6 +307,49 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.ToTable("c_CveTransporte", "sat");
                 });
 
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.DerechosDePaso", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
+                    b.Property<string>("Concesionario")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<string>("Entre")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Hasta")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("OtorgaRecibe")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_DerechosDePaso", "sat");
+                });
+
             modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.DocumentoAduanero", b =>
                 {
                     b.Property<string>("Clave")
@@ -159,6 +371,47 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.HasKey("Clave");
 
                     b.ToTable("c_DocumentoAduanero", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.Estaciones", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
+
+                    b.Property<string>("ClaveTransporte")
+                        .IsRequired()
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<string>("DesignadorIATA")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<string>("LineaFerrea")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Nacionalidad")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_Estaciones", "sat");
                 });
 
             modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.FiguraTransporte", b =>
@@ -207,6 +460,50 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.ToTable("c_FormaFarmaceutica", "sat");
                 });
 
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.MaterialPeligroso", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaseODivision")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Clave")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<string>("NombreTecnico")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("PeligroSecundario")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Clave");
+
+                    b.ToTable("c_MaterialPeligroso", "sat");
+                });
+
             modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.NumAutorizacionNaviero", b =>
                 {
                     b.Property<string>("Clave")
@@ -250,6 +547,34 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.HasKey("Clave");
 
                     b.ToTable("c_ParteTransporte", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.RegimenAduanero", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<string>("ImpoExpo")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_RegimenAduanero", "sat");
                 });
 
             modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.RegistroISTMO", b =>
@@ -321,6 +646,58 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.ToTable("c_SubTipoRem", "sat");
                 });
 
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.TipoCarro", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.Property<bool>("Contenedor")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_TipoCarro", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.TipoDeServicio", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.Property<bool>("Contenedor")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_TipoDeServicio", "sat");
+                });
+
             modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.TipoDeTrafico", b =>
                 {
                     b.Property<string>("Clave")
@@ -367,6 +744,34 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.ToTable("c_TipoEmbalaje", "sat");
                 });
 
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.TipoEstacion", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
+                    b.Property<string>("ClaveTransporte")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_TipoEstacion", "sat");
+                });
+
             modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.TipoMateria", b =>
                 {
                     b.Property<string>("Clave")
@@ -388,6 +793,34 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.HasKey("Clave");
 
                     b.ToTable("c_TipoMateria", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.CartaPorte31.TipoPermiso", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
+                    b.Property<string>("ClaveTransporte")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_TipoPermiso", "sat");
                 });
 
             modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.Aduana", b =>
@@ -1265,6 +1698,34 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.HasKey("UsoCFDI", "RegimenFiscal");
 
                     b.ToTable("c_UsoCFDI_RegimenFiscalReceptor", "sat");
+                });
+
+            modelBuilder.Entity("DanmaobCfdi.Catalogs.ComercioExterior.FraccionArancelaria", b =>
+                {
+                    b.Property<string>("Clave")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .UseCollation("Latin1_General_100_CI_AI");
+
+                    b.Property<DateOnly?>("FechaFinVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("FechaInicioVigencia")
+                        .HasColumnType("date");
+
+                    b.Property<string>("UMT")
+                        .IsRequired()
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
+                    b.HasKey("Clave");
+
+                    b.ToTable("c_FraccionArancelaria", "sat");
                 });
 
             modelBuilder.Entity("DanmaobCfdi.Catalogs.Persistence.CatalogoVersion", b =>
