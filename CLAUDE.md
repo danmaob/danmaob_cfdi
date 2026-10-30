@@ -352,3 +352,9 @@ DANMAOB_CFDI is the fiscal component of DANMAOB: a .NET 10 class library, withou
     - `c_NumPedimentoAduana` (does not inherit `SatCatalogEntity`): `Id` (`int` identity key), `Aduana` (2), `Patente` (4), `Ejercicio` and `Cantidad` (`int`), validity dates as `date`, unique index on `Aduana`, `Patente` and `Ejercicio`.
 - Relations between geographic catalogs (`c_CodigoPostal` to estado, municipio and localidad; `c_Colonia` to código postal) are plain columns without foreign keys; they are validated in code.
 - `tests/DanmaobCfdi.Tests/Catalogs/Cfdi40/GeographicCatalogModelTests.cs` checks the nine tables, including that each composite-key table has no unique key other than its primary key.
+
+## 27. SAT catalogs: simple Carta Porte 3.1 catalogs (verified)
+
+- Carta Porte 3.1 entities and configurations live in `src/DanmaobCfdi.Catalogs/CartaPorte31/`, namespace `DanmaobCfdi.Catalogs.CartaPorte31`; tests in `tests/DanmaobCfdi.Tests/Catalogs/CartaPorte31/`, namespace `DanmaobCfdi.Tests.Catalogs.CartaPorte31`. Same shapes as the CFDI 4.0 catalogs.
+- Simple catalogs (only the four common columns), migration `CartaPorte31SimpleCatalogs`; key length / description length: `c_CveTransporte` 2/50, `c_TipoEmbalaje` 4/250, `c_SectorCOFEPRIS` 2/50, `c_FormaFarmaceutica` 2/50, `c_CondicionesEspeciales` 2/50, `c_TipoMateria` 2/50, `c_DocumentoAduanero` 2/250, `c_ParteTransporte` 4/50, `c_FiguraTransporte` 2/50, `c_RegistroISTMO` 2/50, `c_ConfigMaritima` 3/50, `c_ClaveTipoCarga` 3/50, `c_ContenedorMaritimo` 5/50, `c_TipoDeTrafico` 4/50, `c_SubTipoRem` 6/50, and without description (`Descripcion` nullable) `c_NumAutorizacionNaviero` 15/50.
+- `tests/DanmaobCfdi.Tests/Catalogs/CartaPorte31/SimpleCartaPorteCatalogModelTests.cs` checks the sixteen tables with one theory, against the design-time model.
