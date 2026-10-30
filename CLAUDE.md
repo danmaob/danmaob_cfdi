@@ -358,3 +358,19 @@ DANMAOB_CFDI is the fiscal component of DANMAOB: a .NET 10 class library, withou
 - Carta Porte 3.1 entities and configurations live in `src/DanmaobCfdi.Catalogs/CartaPorte31/`, namespace `DanmaobCfdi.Catalogs.CartaPorte31`; tests in `tests/DanmaobCfdi.Tests/Catalogs/CartaPorte31/`, namespace `DanmaobCfdi.Tests.Catalogs.CartaPorte31`. Same shapes as the CFDI 4.0 catalogs.
 - Simple catalogs (only the four common columns), migration `CartaPorte31SimpleCatalogs`; key length / description length: `c_CveTransporte` 2/50, `c_TipoEmbalaje` 4/250, `c_SectorCOFEPRIS` 2/50, `c_FormaFarmaceutica` 2/50, `c_CondicionesEspeciales` 2/50, `c_TipoMateria` 2/50, `c_DocumentoAduanero` 2/250, `c_ParteTransporte` 4/50, `c_FiguraTransporte` 2/50, `c_RegistroISTMO` 2/50, `c_ConfigMaritima` 3/50, `c_ClaveTipoCarga` 3/50, `c_ContenedorMaritimo` 5/50, `c_TipoDeTrafico` 4/50, `c_SubTipoRem` 6/50, and without description (`Descripcion` nullable) `c_NumAutorizacionNaviero` 15/50.
 - `tests/DanmaobCfdi.Tests/Catalogs/CartaPorte31/SimpleCartaPorteCatalogModelTests.cs` checks the sixteen tables with one theory, against the design-time model.
+
+## 28. SAT catalogs: Carta Porte 3.1 catalogs with their own structure and the tariff catalog (verified)
+
+- Migration `CartaPorte31OwnStructureCatalogs`. Entities and configurations in `src/DanmaobCfdi.Catalogs/CartaPorte31/`, except `c_FraccionArancelaria`, the only catalog of `src/DanmaobCfdi.Catalogs/ComercioExterior/` (namespace `DanmaobCfdi.Catalogs.ComercioExterior`). Key length / description length:
+    - `c_ClaveProdServCP` 8/250: `PalabrasSimilares` (1000, nullable, collation `Latin1_General_100_CI_AI`) and `MaterialPeligroso` (50: `0`, `1` or `0,1`).
+    - `c_MaterialPeligroso` 5/500 (the XSD has a key of 5 characters, although the Excel only reaches 4): its SAT key repeats, so it calls `ConfigureColumns`, has the key `Id` (`int` identity) and a NON-unique index on `Clave`; `ClaseODivision` (50), `PeligroSecundario` (50) and `NombreTecnico` (250), all nullable.
+    - `c_ClaveUnidadPeso` 3/250 (`Descripcion` holds the unit name): `DescripcionUnidad` (1000), `Nota` (250), `Simbolo` (50), nullable, and `Bandera` (50).
+    - `c_Estaciones` 12/100: `ClaveTransporte` (2), `Nacionalidad` (50), `DesignadorIATA` and `LineaFerrea` (50, nullable).
+    - `c_TipoEstacion` 2/50 and `c_TipoPermiso` 6/250: `ClaveTransporte` (50, a list of keys as text); `c_RegimenAduanero` 3/250: `ImpoExpo` (50).
+    - `c_ConfigAutotransporte` 8/250: `NumeroEjes` (`int`, nullable), `NumeroLlantas` (50, nullable, text such as `8 o 10`) and `Remolque` (50).
+    - `c_CodigoTransporteAereo` 5/100 (`Descripcion` holds the airline name): `Nacionalidad` and `DesignadorOACI` (50).
+    - `c_TipoDeServicio` 4/50 and `c_TipoCarro` 4/50: `Contenedor` (`bit`); `c_Contenedor` 4/50: `TipoContenedor` (50).
+    - `c_DerechosDePaso` 6/50: `Entre`, `Hasta` and `Concesionario` (250), `OtorgaRecibe` (50).
+    - `c_FraccionArancelaria` 10/2000 (the only description of 2000): `UMT` (2).
+- With this migration all 57 CFDI 4.0, Carta Porte 3.1 and tariff catalogs have their table; the 4 Retenciones 2.0 catalogs remain.
+- `tests/DanmaobCfdi.Tests/Catalogs/CartaPorte31/OwnStructureCartaPorteCatalogModelTests.cs` checks the fourteen tables, including `c_FraccionArancelaria`.
