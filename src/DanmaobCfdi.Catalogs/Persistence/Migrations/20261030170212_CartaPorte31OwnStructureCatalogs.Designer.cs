@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DanmaobCfdi.Catalogs.Persistence.Migrations
 {
     [DbContext(typeof(SatDbContext))]
-    [Migration("20261030162450_CartaPorte31OwnStructureCatalogs")]
+    [Migration("20261030170212_CartaPorte31OwnStructureCatalogs")]
     partial class CartaPorte31OwnStructureCatalogs
     {
         /// <inheritdoc />
@@ -477,8 +477,8 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
 
                     b.Property<string>("Clave")
                         .IsRequired()
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()

@@ -162,7 +162,7 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     ClaseODivision = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     PeligroSecundario = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     NombreTecnico = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    Clave = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
+                    Clave = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false, collation: "Latin1_General_100_CI_AI"),
                     FechaInicioVigencia = table.Column<DateOnly>(type: "date", nullable: true),
                     FechaFinVigencia = table.Column<DateOnly>(type: "date", nullable: true)

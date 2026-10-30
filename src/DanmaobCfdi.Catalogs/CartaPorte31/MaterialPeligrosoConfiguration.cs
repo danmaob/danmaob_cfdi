@@ -8,7 +8,7 @@ internal sealed class MaterialPeligrosoConfiguration : IEntityTypeConfiguration<
 {
     public void Configure(EntityTypeBuilder<MaterialPeligroso> builder)
     {
-        SatCatalogConfiguration.ConfigureColumns(builder, "c_MaterialPeligroso", 4, 500, true);
+        SatCatalogConfiguration.ConfigureColumns(builder, "c_MaterialPeligroso", 5, 500, true);
         builder.HasKey(entity => entity.Id);
         builder.HasIndex(entity => entity.Clave);
         builder.Property(entity => entity.ClaseODivision).HasMaxLength(50);

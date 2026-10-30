@@ -474,8 +474,8 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
 
                     b.Property<string>("Clave")
                         .IsRequired()
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
