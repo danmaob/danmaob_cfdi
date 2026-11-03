@@ -75,12 +75,13 @@ public sealed class ThirdPartyXmlReaderTests
     }
 
     [Fact]
-    public void Read_CancellationAcknowledgment_ReturnsReadWithoutModel()
+    public void Read_CancellationAcknowledgment_ReturnsReadWithCancelacion()
     {
         XmlReadResult result = ReadFixture("Deteccion", "acuse-cancelacion.xml");
         Assert.Equal(XmlReadStatus.Read, result.Status);
         Assert.Equal(DocumentKind.CancellationAcknowledgment, result.Kind);
         Assert.Null(result.Cfdi);
+        Assert.NotNull(result.Cancelacion);
     }
 
     private static IThirdPartyXmlReader CreateReader()
