@@ -191,7 +191,7 @@ Toda lectura devuelve un resultado con uno de cinco estados:
 
 - El TMS puede leer los CFDI del cliente desde `CFDI_Lectura`, sin esperar la carga de catálogos ni el diseño de la emisión.
 - Un documento antiguo, desconocido o defectuoso nunca detiene la carga del cliente: cada uno devuelve su propio estado.
-- Las pruebas de lectura usan los archivos de referencia del ADR-04 (`Cfdi40/`, `Pagos20/`, `CartaPorte31/`, `Cancelacion/`, `NoSoportados/` e `Invalidos/`).
+- Las pruebas de lectura usan los archivos de referencia del ADR-04 (`Cfdi40/`, `Deteccion/`, `Cancelacion/`, `NoSoportados/` e `Invalidos/`), y `LecturaIntegralTests` los recorre todos con su estado esperado.
 
 **Lo que exige cuidado:**
 
@@ -218,3 +218,4 @@ Toda lectura devuelve un resultado con uno de cinco estados:
 | 19 de octubre de 2026 | Corrección según la documentación del Web Service de cancelación de PAX: el contexto identifica el acuse como respuesta de `fnCancelarXML20` y registra espacios al inicio y al final de los valores; la sección 4 reemplaza la expectativa equivocada "201 y 202" por la tabla de códigos de PAX (202 significa aceptación en proceso, no cancelado). La decisión no cambia: el componente sigue entregando el código sin interpretarlo |
 | 21 de octubre de 2026 | Precisión por TS-02-2: los `xs:any` de `cfdv40.xsd` (líneas 395, 678 y 688 de la versión local) no declaran `processContents` y son estrictos. Se agregan a la sección 2, punto 3, la regla que ignora los errores dentro de complementos y addendas sin esquema, el límite de 100 errores y el tratamiento del mensaje. Sin esta regla, un CFDI con addenda o con un complemento fuera del alcance resultaría `Invalid`, en contra de la tabla de la sección 3 |
 | 3 de noviembre de 2026 | Precisión por TS-02-9 (opción A de Luis): la lectura del acuse se construye con la forma del ejemplo de la documentación de PAX, sin esperar un acuse real del primer cliente, que queda pendiente. La sección 4 agrega el formato de `Fecha` y `UUIDfecha`, ignora `Signature` en cualquier forma y los elementos y atributos no listados, define el resultado `Invalid` con mensajes fijos sin valores y deja como no reconocida la respuesta SOAP completa. El modelo es `CancelacionData` y `FolioData` en `Reading/Cancelacion`, entregado en `XmlReadResult.Cancelacion` |
+| 3 de noviembre de 2026 | Corrección por TS-13-1: la lista de carpetas de referencia de las consecuencias se ajusta a las reales (no existen `Pagos20/` ni `CartaPorte31/`; se agrega `Deteccion/`) y menciona la prueba integral `LecturaIntegralTests` |

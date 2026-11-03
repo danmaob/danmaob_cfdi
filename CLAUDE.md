@@ -414,3 +414,10 @@ DANMAOB_CFDI is the fiscal component of DANMAOB: a .NET 10 class library, withou
 - The full SOAP response of `fnCancelarXML20` stays `Unrecognized`: the component never parses XML embedded in a `CDATA`.
 - Fixtures in `Fixtures/Cancelacion/` (written by Claude, copied by a step of Luis): `acuse-pax.xml` (the shape of PAX's example, with extra spaces, two folios and a text signature), `acuse-firma-xml.xml` (an XML signature block and unknown elements), `acuse-sin-folios.xml`, `acuse-valores-invalidos.xml` and `respuesta-soap.xml`.
 - `tests/DanmaobCfdi.Tests/Core/Reading/Cancelacion/CancelacionReadingTests.cs` reads them through `IThirdPartyXmlReader` and calls `CancelacionVerifier.Verify` directly once.
+
+## 32. CFDI_Lectura: integral test and release status (verified)
+
+- `tests/DanmaobCfdi.Tests/Core/Reading/LecturaIntegralTests.cs` has one `[Theory]`, `Read_ReferenceFixture_ReturnsExpectedStatusAndKind`, with one `[InlineData]` per reading fixture (31): folder, file name, expected `XmlReadStatus` and expected `DocumentKind?` (`null` for `Rejected`, `Unsupported` and `Unrecognized`). It also checks that `StructuralErrors` is filled only for `Invalid`, `Cfdi` only for a read CFDI and `Cancelacion` only for a read acknowledgment.
+- Every new reading fixture adds its row to that theory in the same package; `Csd/` and the `.cadena.txt` and `.sello.txt` files are not part of it.
+- `ThirdPartyXmlReaderTests.Read_CancellationAcknowledgment_ReturnsReadWithCancelacion` (renamed from `..._ReturnsReadWithoutModel`) also checks that `Cancelacion` is not null.
+- Open defects of `CFDI_Lectura` at the close of TS-13-1: none. Pending outside the code: the shape of a real cancellation acknowledgment of the first client (ADR-05, precision of 3 November 2026) and real third-party XML of that client, to be tried when the TMS integrates the release (TS-10-4).
