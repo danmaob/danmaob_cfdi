@@ -401,3 +401,16 @@ DANMAOB_CFDI is the fiscal component of DANMAOB: a .NET 10 class library, withou
 - `CartaPorte31Extractor` gained the private methods `ReadAutotransporte`, `ReadIdentificacionVehicular`, `ReadSeguros`, `ReadRemolque`, `ReadFiguraTransporte` and `ReadTiposFigura`, after `ReadMercancia`. `Extract` assigns `FiguraTransporte` and `ReadMercancias` assigns `Autotransporte`, each as the last assignment of its initializer. `AnioModeloVM` is parsed with `int.Parse` and `CultureInfo.InvariantCulture`.
 - Outside the model: `TransporteMaritimo`, `TransporteAereo` and `TransporteFerroviario`. A Carta Porte by any of those means is still read, with `Autotransporte` in `null`.
 - `tests/DanmaobCfdi.Tests/Core/Reading/CartaPorte31/CartaPorte31TransportTests.cs` reads the vehicle, the insurance, the trailer and the operator of `Fixtures/Cfdi40/ingreso-cartaporte.xml`.
+
+## 31. Cancellation acknowledgment (verified)
+
+- `src/DanmaobCfdi.Core/Reading/Cancelacion/`, namespace `DanmaobCfdi.Core.Reading.Cancelacion` (ADR-05, section 4, with its precision of 3 November 2026):
+    - `CancelacionData` (`public sealed`, `{ get; internal init; }`): `RfcEmisor` (`string`), `Fecha` (`DateTime` without time zone) and `Folios` (`IReadOnlyList<FolioData>`).
+    - `FolioData`: `UUID` and `UUIDEstatus` (`string`), `UUIDdescripcion` (`string?`) and `UUIDfecha` (`DateTime?`), with the exact casing of the acknowledgment. Status codes and descriptions are delivered as written, never interpreted.
+    - `CancelacionVerifier` (`internal static`): `internal static IReadOnlyList<StructuralError> Verify(XDocument document)` applies the rules of ADR-05, section 4, and returns every error with its line and position. Messages are fixed Spanish texts without document values.
+    - `CancelacionExtractor` (`internal static`): `internal static CancelacionData Extract(XDocument document)` trims every value; it is called only after `Verify` returned no errors, so its date parsing never fails.
+    - Both classes keep their own `FechaFormat` constant (`yyyy-MM-dd'T'HH:mm:ss`) and their own `AcuseNs` field (`http://cancelacfd.sat.gob.mx`). `Signature`, in any form, and any element or attribute not in the rules are ignored.
+- `XmlReadResult.Cancelacion` (`CancelacionData?`) is its last property. `ThirdPartyXmlReader` sends the acknowledgment to its private method `ReadCancelacion`, which returns `Invalid` with the errors or `Read` with `Cancelacion`. Neither class is registered in the service collection.
+- The full SOAP response of `fnCancelarXML20` stays `Unrecognized`: the component never parses XML embedded in a `CDATA`.
+- Fixtures in `Fixtures/Cancelacion/` (written by Claude, copied by a step of Luis): `acuse-pax.xml` (the shape of PAX's example, with extra spaces, two folios and a text signature), `acuse-firma-xml.xml` (an XML signature block and unknown elements), `acuse-sin-folios.xml`, `acuse-valores-invalidos.xml` and `respuesta-soap.xml`.
+- `tests/DanmaobCfdi.Tests/Core/Reading/Cancelacion/CancelacionReadingTests.cs` reads them through `IThirdPartyXmlReader` and calls `CancelacionVerifier.Verify` directly once.

@@ -92,11 +92,12 @@ No existe un XSD oficial del acuse en el juego local. Se valida con una **verifi
 | Elemento | Regla |
 | --- | --- |
 | Raíz | `Cancelacion` en el namespace `http://cancelacfd.sat.gob.mx` |
-| Atributos `RfcEmisor` y `Fecha` | Obligatorios |
+| Atributos `RfcEmisor` y `Fecha` | Obligatorios. `Fecha` con formato `aaaa-mm-ddThh:mm:ss` |
 | `Folios` | Al menos uno |
 | `UUID` y `UUIDEstatus` en cada `Folios` | Obligatorios. `UUID` con formato de UUID |
-| `UUIDdescripcion` y `UUIDfecha` | Opcionales |
-| `Signature` | Se ignora: la lectura no verifica sellos (D-30) |
+| `UUIDdescripcion` y `UUIDfecha` | Opcionales. `UUIDfecha`, si viene, con formato `aaaa-mm-ddThh:mm:ss` |
+| `Signature` | Se ignora en cualquier forma (texto o bloque de firma XML, en cualquier namespace): la lectura no verifica sellos (D-30) |
+| Elementos y atributos no listados | Se ignoran, para que un acuse con datos adicionales se siga leyendo |
 
 - A los valores de esos atributos y elementos se les quitan los espacios al inicio y al final. En UUID, códigos y fechas esto no cambia el significado.
 - El componente entrega el código de estatus y su descripción **tal como vienen**, sin interpretarlos. El producto decide qué hacer con cada código.
@@ -112,7 +113,9 @@ No existe un XSD oficial del acuse en el juego local. Se valida con una **verifi
 
 - El significado definitivo de cada código se confirma con PAX al firmar el nuevo contrato (TK-09-1).
 - Un XML de cancelación con otra raíz o en otro namespace se reporta como no reconocido, sin fallar.
-- Antes del paquete de TS-02-9, Luis comparte los nombres de elementos y atributos de un acuse real del primer cliente, sin valores. Si su forma es distinta, se agrega como segunda variante en ese mismo paquete, sin cambiar el modelo de lectura.
+- Si falla una regla, el resultado es `Invalid` con todos los errores, cada uno con su línea y posición. Los mensajes son textos fijos en español y nunca incluyen valores del documento.
+- La respuesta SOAP completa de `fnCancelarXML20` (con el acuse dentro de un `CDATA`) se reporta como no reconocida: el componente no analiza XML contenido en otro XML.
+- La forma de un acuse real del primer cliente queda pendiente (sección 14 de las instrucciones). Si es distinta, se agrega como segunda variante, sin cambiar el modelo de lectura.
 
 ### 5. Modelo de lectura propio
 
@@ -193,7 +196,7 @@ Toda lectura devuelve un resultado con uno de cinco estados:
 **Lo que exige cuidado:**
 
 - **Namespaces:** los de la sección 3 se confirman contra los XSD locales antes de TS-02-3.
-- **Acuse de cancelación:** la verificación es propia y no oficial. TS-02-9 necesita antes la forma de un acuse real del primer cliente.
+- **Acuse de cancelación:** la verificación es propia y no oficial, construida con la forma del ejemplo de PAX. Falta confirmarla con un acuse real del primer cliente.
 - **Códigos de cancelación:** el producto los interpreta mientras PAX no confirme su significado.
 - **Modelo estable:** después de `1.0.0`, el modelo de lectura solo crece de forma compatible.
 
@@ -214,3 +217,4 @@ Toda lectura devuelve un resultado con uno de cinco estados:
 | --- | --- |
 | 19 de octubre de 2026 | Corrección según la documentación del Web Service de cancelación de PAX: el contexto identifica el acuse como respuesta de `fnCancelarXML20` y registra espacios al inicio y al final de los valores; la sección 4 reemplaza la expectativa equivocada "201 y 202" por la tabla de códigos de PAX (202 significa aceptación en proceso, no cancelado). La decisión no cambia: el componente sigue entregando el código sin interpretarlo |
 | 21 de octubre de 2026 | Precisión por TS-02-2: los `xs:any` de `cfdv40.xsd` (líneas 395, 678 y 688 de la versión local) no declaran `processContents` y son estrictos. Se agregan a la sección 2, punto 3, la regla que ignora los errores dentro de complementos y addendas sin esquema, el límite de 100 errores y el tratamiento del mensaje. Sin esta regla, un CFDI con addenda o con un complemento fuera del alcance resultaría `Invalid`, en contra de la tabla de la sección 3 |
+| 3 de noviembre de 2026 | Precisión por TS-02-9 (opción A de Luis): la lectura del acuse se construye con la forma del ejemplo de la documentación de PAX, sin esperar un acuse real del primer cliente, que queda pendiente. La sección 4 agrega el formato de `Fecha` y `UUIDfecha`, ignora `Signature` en cualquier forma y los elementos y atributos no listados, define el resultado `Invalid` con mensajes fijos sin valores y deja como no reconocida la respuesta SOAP completa. El modelo es `CancelacionData` y `FolioData` en `Reading/Cancelacion`, entregado en `XmlReadResult.Cancelacion` |
