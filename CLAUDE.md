@@ -427,3 +427,9 @@ DANMAOB_CFDI is the fiscal component of DANMAOB: a .NET 10 class library, withou
 - `tools/copia/reemplazar-copia.sh` imports or replaces the component copy (`DanmaobCfdi/`, the content of `src/` at a release tag) in a product solution, and `tools/copia/probar-reemplazo.sh` tests it in a temporary folder (ADR-02, section 5, precision of 3 November 2026). Procedure in Spanish: `docs/procedimientos/reemplazo-de-copia.md`.
 - Both scripts belong to Claude and are run only by Luis. Never open, edit, run or reformat anything under `tools/copia/` or `docs/procedimientos/`.
 - They read `<Version>` from `src/Directory.Build.props`: keep that property on a single line with that exact form, because the scripts depend on it.
+
+## 34. Public contract guide (verified)
+
+- `src/GUIA-DE-USO.md` (Spanish) is the guide of the public contract for the teams of the products. It lives in `src/`, so it travels with every copy and always matches the version imported.
+- It belongs to Claude, like the ADRs and this file. Never open, edit or reformat it.
+- Every package that changes the public contract (a public type, member, registration method or the meaning of a result) updates the guide in a step of Luis, and the step checks that every identifier the guide names exists in `src/`. Version 1.0.0 (`CFDI_Lectura`) covers only the third-party XML reading.
