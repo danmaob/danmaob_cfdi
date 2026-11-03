@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/4" xmlns:cartaporte31="http://www.sat.gob.mx/CartaPorte31" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd http://www.sat.gob.mx/CartaPorte31 http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte31.xsd" Version="4.0" Serie="CP" Folio="2001" Fecha="2026-10-16T07:30:00" Sello="aYOrssdYBSSISAI0nkTtwX5WTYGQjUqFoooKKKa6lldWoI1HtXrvkyT8cXApxLUk2wko38FSEcr/2HZ5PQkzLL/Omoh1XpnlJlCF8VaQkdgoaM593yjAsh4ufHF4JN5akKKf6EhxaGEBdPy8nde3l7ZfFzG8t8GfaO6twdrZvKwWXsvzlDzg4/QZbXEAkLTptvBX9xVpSrAaOdXhSmpMZAh1wPoBJzP4hyySU4wlqckAUQfmEvvgHKoqGgMlK4lYCaKK/9yUUz9XUQxA9cS2Yd+r0HqnqHnX/nIZjx+QvdR8pctEUVUSQgzor1M6c46gNeuRHEchBVgDu5ORm42R8Q==" FormaPago="03" NoCertificado="30001000000500003416" Certificado="MIIFsDCCA5igAwIBAgIUMzAwMDEwMDAwMDA1MDAwMDM0MTYwDQYJKoZIhvcNAQELBQAwggErMQ8wDQYDVQQDDAZBQyBVQVQxLjAsBgNVBAoMJVNFUlZJQ0lPIERFIEFETUlOSVNUUkFDSU9OIFRSSUJVVEFSSUExGjAYBgNVBAsMEVNBVC1JRVMgQXV0aG9yaXR5MSgwJgYJKoZIhvcNAQkBFhlvc2Nhci5tYXJ0aW5lekBzYXQuZ29iLm14MR0wGwYDVQQJDBQzcmEgY2VycmFkYSBkZSBjYWxpejEOMAwGA1UEEQwFMDYzNzAxCzAJBgNVBAYTAk1YMRkwFwYDVQQIDBBDSVVEQUQgREUgTUVYSUNPMREwDwYDVQQHDAhDT1lPQUNBTjERMA8GA1UELRMIMi41LjQuNDUxJTAjBgkqhkiG9w0BCQITFnJlc3BvbnNhYmxlOiBBQ0RNQS1TQVQwHhcNMjMwNTE4MTE0MzUxWhcNMjcwNTE4MTE0MzUxWjCB1zEnMCUGA1UEAxMeRVNDVUVMQSBLRU1QRVIgVVJHQVRFIFNBIERFIENWMScwJQYDVQQpEx5FU0NVRUxBIEtFTVBFUiBVUkdBVEUgU0EgREUgQ1YxJzAlBgNVBAoTHkVTQ1VFTEEgS0VNUEVSIFVSR0FURSBTQSBERSBDVjElMCMGA1UELRMcRUtVOTAwMzE3M0M5IC8gVkFEQTgwMDkyN0RKMzEeMBwGA1UEBRMVIC8gVkFEQTgwMDkyN0hTUlNSTDA1MRMwEQYDVQQLEwpTdWN1cnNhbCAxMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtmecO6n2GS0zL025gbHGQVxznPDICoXzR2uUngz4DqxVUC/w9cE6FxSiXm2ap8Gcjg7wmcZfm85EBaxCx/0J2u5CqnhzIoGCdhBPuhWQnIh5TLgj/X6uNquwZkKChbNe9aeFirU/JbyN7Egia9oKH9KZUsodiM/pWAH00PCtoKJ9OBcSHMq8Rqa3KKoBcfkg1ZrgueffwRLws9yOcRWLb02sDOPzGIm/jEFicVYt2Hw1qdRE5xmTZ7AGG0UHs+unkGjpCVeJ+BEBn0JPLWVvDKHZAQMj6s5Bku35+d/MyATkpOPsGT/VTnsouxekDfikJD1f7A1ZpJbqDpkJnss3vQIDAQABox0wGzAMBgNVHRMBAf8EAjAAMAsGA1UdDwQEAwIGwDANBgkqhkiG9w0BAQsFAAOCAgEAFaUgj5PqgvJigNMgtrdXZnbPfVBbukAbW4OGnUhNrA7SRAAfv2BSGk16PI0nBOr7qF2mItmBnjgEwk+DTv8Zr7w5qp7vleC6dIsZFNJoa6ZndrE/f7KO1CYruLXr5gwEkIyGfJ9NwyIagvHHMszzyHiSZIA850fWtbqtythpAliJ2jF35M5pNS+YTkRB+T6L/c6m00ymN3q9lT1rB03YywxrLreRSFZOSrbwWfg34EJbHfbFXpCSVYdJRfiVdvHnewN0r5fUlPtR9stQHyuqewzdkyb5jTTw02D2cUfL57vlPStBj7SEi3uOWvLrsiDnnCIxRMYJ2UA2ktDKHk+zWnsDmaeleSzonv2CHW42yXYPCvWi88oE1DJNYLNkIjua7MxAnkNZbScNw01A6zbLsZ3y8G6eEYnxSTRfwjd8EP4kdiHNJftm7Z4iRU7HOVh79/lRWB+gd171s3d/mI9kte3MRy6V8MMEMCAnMboGpaooYwgAmwclI2XZCczNWXfhaWe0ZS5PmytD/GDpXzkX0oEgY9K/uYo5V77NdZbGAjmyi8cE2B2ogvyaN2XfIInrZPgEffJ4AB7kFA2mwesdLOCh0BLD9itmCve3A1FGR4+stO2ANUoiI3w3Tv2yQSg4bjeDlJ08lXaaFCLW2peEXMXjQUk7fmpb5MNuOUTW6BE=" SubTotal="20000.00" Moneda="MXN" Total="22400.00" TipoDeComprobante="I" Exportacion="01" MetodoPago="PUE" LugarExpedicion="42501">
+    <cfdi:Emisor Rfc="EKU9003173C9" Nombre="ESCUELA KEMPER URGATE" RegimenFiscal="601"/>
+    <cfdi:Receptor Rfc="WERX631016S30" Nombre="XAIME WEIR ROJO" DomicilioFiscalReceptor="06300" RegimenFiscalReceptor="625" UsoCFDI="G03"/>
+    <cfdi:Conceptos>
+        <cfdi:Concepto ClaveProdServ="78101802" NoIdentificacion="VIAJE-2001" Cantidad="1" ClaveUnidad="E48" Unidad="Servicio" Descripcion="Flete Irapuato a Monterrey" ValorUnitario="20000.00" Importe="20000.00" ObjetoImp="02">
+            <cfdi:Impuestos>
+                <cfdi:Traslados>
+                    <cfdi:Traslado Base="20000.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="3200.00"/>
+                </cfdi:Traslados>
+                <cfdi:Retenciones>
+                    <cfdi:Retencion Base="20000.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.040000" Importe="800.00"/>
+                </cfdi:Retenciones>
+            </cfdi:Impuestos>
+        </cfdi:Concepto>
+    </cfdi:Conceptos>
+    <cfdi:Impuestos TotalImpuestosRetenidos="800.00" TotalImpuestosTrasladados="3200.00">
+        <cfdi:Retenciones>
+            <cfdi:Retencion Impuesto="002" Importe="800.00"/>
+        </cfdi:Retenciones>
+        <cfdi:Traslados>
+            <cfdi:Traslado Base="20000.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="3200.00"/>
+        </cfdi:Traslados>
+    </cfdi:Impuestos>
+    <cfdi:Complemento>
+        <cartaporte31:CartaPorte Version="3.1" IdCCP="CCC5A1B2-3C4D-4E5F-8A9B-0C1D2E3F4A5B" TranspInternac="No" TotalDistRec="780.5">
+            <cartaporte31:Ubicaciones>
+                <cartaporte31:Ubicacion TipoUbicacion="Origen" IDUbicacion="OR000001" RFCRemitenteDestinatario="EKU9003173C9" NombreRemitenteDestinatario="ESCUELA KEMPER URGATE" FechaHoraSalidaLlegada="2026-10-16T08:00:00">
+                    <cartaporte31:Domicilio Calle="Avenida Guerrero" NumeroExterior="100" Municipio="017" Estado="GUA" Pais="MEX" CodigoPostal="36500"/>
+                </cartaporte31:Ubicacion>
+                <cartaporte31:Ubicacion TipoUbicacion="Destino" IDUbicacion="DE000001" RFCRemitenteDestinatario="WERX631016S30" NombreRemitenteDestinatario="XAIME WEIR ROJO" FechaHoraSalidaLlegada="2026-10-16T20:30:00" DistanciaRecorrida="780.5">
+                    <cartaporte31:Domicilio Calle="Avenida Constitucion" NumeroExterior="2500" Municipio="039" Estado="NLE" Pais="MEX" CodigoPostal="64000"/>
+                </cartaporte31:Ubicacion>
+            </cartaporte31:Ubicaciones>
+            <cartaporte31:Mercancias PesoBrutoTotal="10500.500" UnidadPeso="KGM" NumTotalMercancias="2">
+                <cartaporte31:Mercancia BienesTransp="31162800" Descripcion="Herrajes de acero" Cantidad="100" ClaveUnidad="H87" Unidad="Pieza" PesoEnKg="7300.500" ValorMercancia="150000.00" Moneda="MXN"/>
+                <cartaporte31:Mercancia BienesTransp="15101514" Descripcion="Gasolina regular en tambores" Cantidad="20" ClaveUnidad="H87" Unidad="Tambor" MaterialPeligroso="Sí" CveMaterialPeligroso="1203" Embalaje="1A1" DescripEmbalaje="Tambores de acero de tapa no desmontable" PesoEnKg="3200.000" ValorMercancia="48000.00" Moneda="MXN"/>
+                <cartaporte31:Autotransporte PermSCT="TPAF01" NumPermisoSCT="PERMISO-SCT-0001">
+                    <cartaporte31:IdentificacionVehicular ConfigVehicular="T3S2" PesoBrutoVehicular="41.00" PlacaVM="ABC1234" AnioModeloVM="2022"/>
+                    <cartaporte31:Seguros AseguraRespCivil="SEGUROS DE PRUEBA" PolizaRespCivil="POL-123456"/>
+                    <cartaporte31:Remolques>
+                        <cartaporte31:Remolque SubTipoRem="CTR007" Placa="REM1234"/>
+                    </cartaporte31:Remolques>
+                </cartaporte31:Autotransporte>
+            </cartaporte31:Mercancias>
+            <cartaporte31:FiguraTransporte>
+                <cartaporte31:TiposFigura TipoFigura="01" RFCFigura="XAMA620210DQ5" NumLicencia="LIC1234567" NombreFigura="OPERADOR DE PRUEBA"/>
+            </cartaporte31:FiguraTransporte>
+        </cartaporte31:CartaPorte>
+        <tfd:TimbreFiscalDigital xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" Version="1.1" UUID="9B2E4C1A-5D6F-4A7B-8C9D-0E1F2A3B4C5D" FechaTimbrado="2026-10-16T07:31:00" RfcProvCertif="SPR190613I52" SelloCFD="aYOrssdYBSSISAI0nkTtwX5WTYGQjUqFoooKKKa6lldWoI1HtXrvkyT8cXApxLUk2wko38FSEcr/2HZ5PQkzLL/Omoh1XpnlJlCF8VaQkdgoaM593yjAsh4ufHF4JN5akKKf6EhxaGEBdPy8nde3l7ZfFzG8t8GfaO6twdrZvKwWXsvzlDzg4/QZbXEAkLTptvBX9xVpSrAaOdXhSmpMZAh1wPoBJzP4hyySU4wlqckAUQfmEvvgHKoqGgMlK4lYCaKK/9yUUz9XUQxA9cS2Yd+r0HqnqHnX/nIZjx+QvdR8pctEUVUSQgzor1M6c46gNeuRHEchBVgDu5ORm42R8Q==" NoCertificadoSAT="30001000000500003456" SelloSAT="U0VMTE8gU0FUIERFIFBSVUVCQVMgUEFSQSBEQU5NQU9CIENGREk="/>
+    </cfdi:Complemento>
+</cfdi:Comprobante>
