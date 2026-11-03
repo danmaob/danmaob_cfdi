@@ -40,6 +40,7 @@ internal static class CartaPorte31Extractor
             TotalDistRec = XmlAttributeReader.OptionalDecimal(cartaPorte, "TotalDistRec"),
             Ubicaciones = ubicaciones,
             Mercancias = ReadMercancias(cartaPorte.Element(Ccp31 + "Mercancias")),
+            FiguraTransporte = ReadFiguraTransporte(cartaPorte),
         };
     }
 
@@ -101,6 +102,7 @@ internal static class CartaPorte31Extractor
             PesoNetoTotal = XmlAttributeReader.OptionalDecimal(mercancias, "PesoNetoTotal"),
             NumTotalMercancias = int.Parse(XmlAttributeReader.Required(mercancias, "NumTotalMercancias"), CultureInfo.InvariantCulture),
             Mercancias = lista,
+            Autotransporte = ReadAutotransporte(mercancias.Element(Ccp31 + "Autotransporte")),
         };
     }
 
@@ -120,6 +122,105 @@ internal static class CartaPorte31Extractor
             ValorMercancia = XmlAttributeReader.OptionalDecimal(mercancia, "ValorMercancia"),
             Moneda = XmlAttributeReader.Optional(mercancia, "Moneda"),
             FraccionArancelaria = XmlAttributeReader.Optional(mercancia, "FraccionArancelaria"),
+        };
+    }
+
+    private static AutotransporteData? ReadAutotransporte(XElement? autotransporte)
+    {
+        if (autotransporte is null)
+        {
+            return null;
+        }
+
+        List<RemolqueData> remolques = new List<RemolqueData>();
+        foreach (XElement remolque in autotransporte.Elements(Ccp31 + "Remolques").Elements(Ccp31 + "Remolque"))
+        {
+            remolques.Add(ReadRemolque(remolque));
+        }
+
+        return new AutotransporteData
+        {
+            PermSCT = XmlAttributeReader.Required(autotransporte, "PermSCT"),
+            NumPermisoSCT = XmlAttributeReader.Required(autotransporte, "NumPermisoSCT"),
+            IdentificacionVehicular = ReadIdentificacionVehicular(autotransporte.Element(Ccp31 + "IdentificacionVehicular")),
+            Seguros = ReadSeguros(autotransporte.Element(Ccp31 + "Seguros")),
+            Remolques = remolques,
+        };
+    }
+
+    private static IdentificacionVehicularData ReadIdentificacionVehicular(XElement? identificacion)
+    {
+        if (identificacion is null)
+        {
+            return new IdentificacionVehicularData();
+        }
+
+        return new IdentificacionVehicularData
+        {
+            ConfigVehicular = XmlAttributeReader.Required(identificacion, "ConfigVehicular"),
+            PesoBrutoVehicular = XmlAttributeReader.RequiredDecimal(identificacion, "PesoBrutoVehicular"),
+            PlacaVM = XmlAttributeReader.Required(identificacion, "PlacaVM"),
+            AnioModeloVM = int.Parse(XmlAttributeReader.Required(identificacion, "AnioModeloVM"), CultureInfo.InvariantCulture),
+        };
+    }
+
+    private static SegurosData ReadSeguros(XElement? seguros)
+    {
+        if (seguros is null)
+        {
+            return new SegurosData();
+        }
+
+        return new SegurosData
+        {
+            AseguraRespCivil = XmlAttributeReader.Required(seguros, "AseguraRespCivil"),
+            PolizaRespCivil = XmlAttributeReader.Required(seguros, "PolizaRespCivil"),
+            AseguraMedAmbiente = XmlAttributeReader.Optional(seguros, "AseguraMedAmbiente"),
+            PolizaMedAmbiente = XmlAttributeReader.Optional(seguros, "PolizaMedAmbiente"),
+            AseguraCarga = XmlAttributeReader.Optional(seguros, "AseguraCarga"),
+            PolizaCarga = XmlAttributeReader.Optional(seguros, "PolizaCarga"),
+            PrimaSeguro = XmlAttributeReader.OptionalDecimal(seguros, "PrimaSeguro"),
+        };
+    }
+
+    private static RemolqueData ReadRemolque(XElement remolque)
+    {
+        return new RemolqueData
+        {
+            SubTipoRem = XmlAttributeReader.Required(remolque, "SubTipoRem"),
+            Placa = XmlAttributeReader.Required(remolque, "Placa"),
+        };
+    }
+
+    private static List<TiposFiguraData> ReadFiguraTransporte(XElement cartaPorte)
+    {
+        List<TiposFiguraData> figuras = new List<TiposFiguraData>();
+        foreach (XElement figura in cartaPorte.Elements(Ccp31 + "FiguraTransporte").Elements(Ccp31 + "TiposFigura"))
+        {
+            figuras.Add(ReadTiposFigura(figura));
+        }
+
+        return figuras;
+    }
+
+    private static TiposFiguraData ReadTiposFigura(XElement figura)
+    {
+        List<string> partes = new List<string>();
+        foreach (XElement parte in figura.Elements(Ccp31 + "PartesTransporte"))
+        {
+            partes.Add(XmlAttributeReader.Required(parte, "ParteTransporte"));
+        }
+
+        return new TiposFiguraData
+        {
+            TipoFigura = XmlAttributeReader.Required(figura, "TipoFigura"),
+            RFCFigura = XmlAttributeReader.Optional(figura, "RFCFigura"),
+            NumLicencia = XmlAttributeReader.Optional(figura, "NumLicencia"),
+            NombreFigura = XmlAttributeReader.Required(figura, "NombreFigura"),
+            NumRegIdTribFigura = XmlAttributeReader.Optional(figura, "NumRegIdTribFigura"),
+            ResidenciaFiscalFigura = XmlAttributeReader.Optional(figura, "ResidenciaFiscalFigura"),
+            PartesTransporte = partes,
+            Domicilio = ReadDomicilio(figura.Element(Ccp31 + "Domicilio")),
         };
     }
 }
