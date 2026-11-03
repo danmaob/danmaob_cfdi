@@ -14,4 +14,5 @@ public sealed class CartaPorteData
     public decimal? TotalDistRec { get; internal init; }
     public IReadOnlyList<UbicacionData> Ubicaciones { get; internal init; } = Array.Empty<UbicacionData>();
     public MercanciasData Mercancias { get; internal init; } = new MercanciasData();
+    public IReadOnlyList<TiposFiguraData> FiguraTransporte { get; internal init; } = Array.Empty<TiposFiguraData>();
 }

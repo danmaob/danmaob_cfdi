@@ -10,4 +10,5 @@ public sealed class MercanciasData
     public decimal? PesoNetoTotal { get; internal init; }
     public int NumTotalMercancias { get; internal init; }
     public IReadOnlyList<MercanciaData> Mercancias { get; internal init; } = Array.Empty<MercanciaData>();
+    public AutotransporteData? Autotransporte { get; internal init; }
 }
