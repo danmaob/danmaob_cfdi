@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <soap:Body>
+        <fnCancelarXML20Response xmlns="https://test.paxfacturacion.com.mx:476">
+            <fnCancelarXML20Result><![CDATA[<Cancelacion xmlns="http://cancelacfd.sat.gob.mx" RfcEmisor="EKU9003173C9" Fecha="2026-10-21T09:15:00"><Folios><UUID>9B2E4C1A-5D6F-4A7B-8C9D-0E1F2A3B4C5D</UUID><UUIDEstatus>201</UUIDEstatus></Folios><Signature>U0VMTE8=</Signature></Cancelacion>]]></fnCancelarXML20Result>
+        </fnCancelarXML20Response>
+    </soap:Body>
+</soap:Envelope>

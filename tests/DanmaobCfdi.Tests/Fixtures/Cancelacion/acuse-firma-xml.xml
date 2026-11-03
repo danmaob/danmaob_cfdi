@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Cancelacion xmlns="http://cancelacfd.sat.gob.mx" RfcEmisor="EKU9003173C9" Fecha="2026-10-21T09:15:00" Version="1.0">
+    <Folios>
+        <UUID>9B2E4C1A-5D6F-4A7B-8C9D-0E1F2A3B4C5D</UUID>
+        <UUIDEstatus>201</UUIDEstatus>
+        <Motivo>02</Motivo>
+    </Folios>
+    <Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="SelloSAT">
+        <SignedInfo>
+            <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+            <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#hmac-sha512"/>
+            <Reference URI="">
+                <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+                <DigestValue>RElHRVNUIERFIFBSVUVCQQ==</DigestValue>
+            </Reference>
+        </SignedInfo>
+        <SignatureValue>U0VMTE8gREUgUFJVRUJB</SignatureValue>
+        <KeyInfo>
+            <KeyName>00001088888810000001</KeyName>
+        </KeyInfo>
+    </Signature>
+</Cancelacion>
