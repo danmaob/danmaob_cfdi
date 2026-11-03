@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using DanmaobCfdi.Core.Reading.Cancelacion;
 using DanmaobCfdi.Core.Reading.Cfdi40;
 
 namespace DanmaobCfdi.Core.Reading;
@@ -58,11 +59,7 @@ internal sealed class ThirdPartyXmlReader : IThirdPartyXmlReader
 
         if (detection.Kind != DocumentKind.Cfdi40)
         {
-            return new XmlReadResult
-            {
-                Status = XmlReadStatus.Read,
-                Kind = detection.Kind
-            };
+            return ReadCancelacion(document);
         }
 
         IReadOnlyList<StructuralError> errors = _validator.Validate(document);
@@ -83,6 +80,28 @@ internal sealed class ThirdPartyXmlReader : IThirdPartyXmlReader
             Kind = detection.Kind,
             Cfdi = _extractor.Extract(document),
             UnreadComplements = detection.UnreadComplements
+        };
+    }
+
+    private static XmlReadResult ReadCancelacion(XDocument document)
+    {
+        IReadOnlyList<StructuralError> errors = CancelacionVerifier.Verify(document);
+
+        if (errors.Count > 0)
+        {
+            return new XmlReadResult
+            {
+                Status = XmlReadStatus.Invalid,
+                Kind = DocumentKind.CancellationAcknowledgment,
+                StructuralErrors = errors
+            };
+        }
+
+        return new XmlReadResult
+        {
+            Status = XmlReadStatus.Read,
+            Kind = DocumentKind.CancellationAcknowledgment,
+            Cancelacion = CancelacionExtractor.Extract(document)
         };
     }
 }
