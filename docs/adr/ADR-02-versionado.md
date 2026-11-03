@@ -66,11 +66,11 @@ Claude da a Luis los comandos exactos de cada entrega.
 
 La copia vive en una carpeta `DanmaobCfdi/`, en la raíz de la solución de cada producto, junto a su archivo de solución. Su contenido es exactamente el de `Net/src/` del original en la etiqueta entregada.
 
-La ruta concreta en DANMAOB_TMS y en DANMAOB_ERP se confirma con evidencia de cada repositorio en TS-10-1.
+La ruta concreta en DANMAOB_TMS y en DANMAOB_ERP se confirma en la primera importación real de cada producto, cuando exista su módulo de facturación: la copia queda junto al archivo de solución que se pasa a `tools/copia/reemplazar-copia.sh`.
 
 ### 5. Reglas del reemplazo
 
-TS-10-1 convierte estas reglas en un procedimiento con comandos exactos:
+TS-10-1 convierte estas reglas en `tools/copia/reemplazar-copia.sh`, documentado en `docs/procedimientos/reemplazo-de-copia.md` y probado con `tools/copia/probar-reemplazo.sh`. En la primera importación, el script agrega además a la solución del producto los tres proyectos de la copia. Las reglas son:
 
 1. La copia sale siempre de una etiqueta del original (`git archive` de `src/` en `vX.Y.Z`), nunca del árbol de trabajo.
 2. Antes de reemplazar, se comprueba que la copia actual del producto sea idéntica a la etiqueta de la versión que declara. Si alguien la editó dentro del producto, el procedimiento se detiene.
@@ -151,3 +151,9 @@ Lo redacta Claude y Luis lo incluye en el commit de entrega.
 - TS-10-1: procedimiento de reemplazo de la copia.
 - SP-03-1 y SP-04-1, que parten de la tabla de versiones cargadas y del principio de que los datos viajan como migraciones.
 - TS-10-2: aplicación de las migraciones del esquema `sat` en el producto.
+
+## Historial de cambios
+
+| Fecha | Cambio |
+| --- | --- |
+| 3 de noviembre de 2026 | Precisión por TS-10-1: los módulos de facturación del TMS y del ERP todavía no existen, así que la ruta de la copia en cada producto se confirma en su primera importación real y no en TS-10-1. El procedimiento de la sección 5 queda en `tools/copia/reemplazar-copia.sh` (importación y reemplazo, commit en el producto sin push) y su prueba en `tools/copia/probar-reemplazo.sh`, que trabaja en una carpeta temporal con etiquetas de prueba que nunca se suben |

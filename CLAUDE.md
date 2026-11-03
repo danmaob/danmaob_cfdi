@@ -421,3 +421,9 @@ DANMAOB_CFDI is the fiscal component of DANMAOB: a .NET 10 class library, withou
 - Every new reading fixture adds its row to that theory in the same package; `Csd/` and the `.cadena.txt` and `.sello.txt` files are not part of it.
 - `ThirdPartyXmlReaderTests.Read_CancellationAcknowledgment_ReturnsReadWithCancelacion` (renamed from `..._ReturnsReadWithoutModel`) also checks that `Cancelacion` is not null.
 - Open defects of `CFDI_Lectura` at the close of TS-13-1: none. Pending outside the code: the shape of a real cancellation acknowledgment of the first client (ADR-05, precision of 3 November 2026) and real third-party XML of that client, to be tried when the TMS integrates the release (TS-10-4).
+
+## 33. Copy replacement tools (verified)
+
+- `tools/copia/reemplazar-copia.sh` imports or replaces the component copy (`DanmaobCfdi/`, the content of `src/` at a release tag) in a product solution, and `tools/copia/probar-reemplazo.sh` tests it in a temporary folder (ADR-02, section 5, precision of 3 November 2026). Procedure in Spanish: `docs/procedimientos/reemplazo-de-copia.md`.
+- Both scripts belong to Claude and are run only by Luis. Never open, edit, run or reformat anything under `tools/copia/` or `docs/procedimientos/`.
+- They read `<Version>` from `src/Directory.Build.props`: keep that property on a single line with that exact form, because the scripts depend on it.
