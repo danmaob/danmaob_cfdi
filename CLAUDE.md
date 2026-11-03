@@ -388,3 +388,16 @@ DANMAOB_CFDI is the fiscal component of DANMAOB: a .NET 10 class library, withou
 - `ComprobanteData.CartaPorte` (`CartaPorteData?`) is the last property of `ComprobanteData`, after `Pagos`, and `Cfdi40Extractor` fills it with `CartaPorte31Extractor.Extract(root)`.
 - Fixture `Fixtures/Cfdi40/ingreso-cartaporte.xml` (template `tools/fixtures/plantillas/Cfdi40/ingreso-cartaporte.xml`): a freight CFDI of type `I` with Carta Porte 3.1 by road (`T3S2` with one trailer and one operator), an origin in Guanajuato and a destination in Nuevo León (780.5 km), two goods (general hardware, and gasoline `1203` as hazardous material in `1A1` drums) and a synthetic stamp. It already carries the data that TS-02-8 reads.
 - `tests/DanmaobCfdi.Tests/Core/Reading/CartaPorte31/CartaPorte31ExtractorTests.cs` extracts the fixture through `SecureXmlLoader` and reads it through `IThirdPartyXmlReader`.
+
+## 30. Carta Porte 3.1: road transport and transport figures (verified)
+
+- Same folder, namespace and shape as section 29 (`public sealed`, `{ get; internal init; }`, exact SAT names):
+    - `AutotransporteData`: `PermSCT`, `NumPermisoSCT`, `IdentificacionVehicular` (`IdentificacionVehicularData`, a new empty instance by default), `Seguros` (`SegurosData`, a new empty instance by default) and `Remolques` (`IReadOnlyList<RemolqueData>`, at most two in the SAT schema).
+    - `IdentificacionVehicularData`: `ConfigVehicular`, `PesoBrutoVehicular` (`decimal`), `PlacaVM` and `AnioModeloVM` (`int`).
+    - `SegurosData`: `AseguraRespCivil` and `PolizaRespCivil` (`string`), `AseguraMedAmbiente`, `PolizaMedAmbiente`, `AseguraCarga` and `PolizaCarga` (`string?`) and `PrimaSeguro` (`decimal?`).
+    - `RemolqueData`: `SubTipoRem` and `Placa`.
+    - `TiposFiguraData`: `TipoFigura`, `RFCFigura?`, `NumLicencia?`, `NombreFigura`, `NumRegIdTribFigura?`, `ResidenciaFiscalFigura?`, `PartesTransporte` (`IReadOnlyList<string>` with the `ParteTransporte` keys, empty by default) and `Domicilio` (`DomicilioData?`, the same class as the locations).
+- `MercanciasData.Autotransporte` (`AutotransporteData?`, `null` when the goods travel by another means) is the last property of `MercanciasData`; `CartaPorteData.FiguraTransporte` (`IReadOnlyList<TiposFiguraData>`, empty by default) is the last property of `CartaPorteData`.
+- `CartaPorte31Extractor` gained the private methods `ReadAutotransporte`, `ReadIdentificacionVehicular`, `ReadSeguros`, `ReadRemolque`, `ReadFiguraTransporte` and `ReadTiposFigura`, after `ReadMercancia`. `Extract` assigns `FiguraTransporte` and `ReadMercancias` assigns `Autotransporte`, each as the last assignment of its initializer. `AnioModeloVM` is parsed with `int.Parse` and `CultureInfo.InvariantCulture`.
+- Outside the model: `TransporteMaritimo`, `TransporteAereo` and `TransporteFerroviario`. A Carta Porte by any of those means is still read, with `Autotransporte` in `null`.
+- `tests/DanmaobCfdi.Tests/Core/Reading/CartaPorte31/CartaPorte31TransportTests.cs` reads the vehicle, the insurance, the trailer and the operator of `Fixtures/Cfdi40/ingreso-cartaporte.xml`.
