@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DanmaobCfdi.Core.Reading.CartaPorte31;
 using DanmaobCfdi.Core.Reading.Pagos20;
 using DanmaobCfdi.Core.Reading.Tfd11;
 
@@ -50,4 +51,6 @@ public sealed class ComprobanteData
     public TimbreFiscalDigitalData? TimbreFiscalDigital { get; internal init; }
 
     public PagosData? Pagos { get; internal init; }
+
+    public CartaPorteData? CartaPorte { get; internal init; }
 }

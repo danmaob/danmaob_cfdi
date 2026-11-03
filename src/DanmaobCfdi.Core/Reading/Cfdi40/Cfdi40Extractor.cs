@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using DanmaobCfdi.Core.Reading.CartaPorte31;
 using DanmaobCfdi.Core.Reading.Pagos20;
 using DanmaobCfdi.Core.Reading.Tfd11;
 
@@ -42,7 +43,8 @@ internal sealed class Cfdi40Extractor
             Conceptos = ReadConceptos(RequiredChild(root, "Conceptos")),
             Impuestos = Cfdi40ImpuestosReader.ReadImpuestos(root),
             TimbreFiscalDigital = Tfd11Extractor.Extract(root),
-            Pagos = Pagos20Extractor.Extract(root)
+            Pagos = Pagos20Extractor.Extract(root),
+            CartaPorte = CartaPorte31Extractor.Extract(root)
         };
     }
 
