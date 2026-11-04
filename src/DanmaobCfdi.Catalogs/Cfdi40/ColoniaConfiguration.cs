@@ -9,7 +9,7 @@ internal sealed class ColoniaConfiguration : IEntityTypeConfiguration<Colonia>
     public void Configure(EntityTypeBuilder<Colonia> builder)
     {
         SatCatalogConfiguration.ConfigureColumns(builder, "c_Colonia", 4, 100, true);
-        builder.HasKey("Clave", "CodigoPostal");
+        builder.HasKey("CodigoPostal", "Clave");
         builder.Property(entity => entity.CodigoPostal).HasMaxLength(5);
     }
 }

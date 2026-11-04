@@ -9,7 +9,7 @@ internal sealed class LocalidadConfiguration : IEntityTypeConfiguration<Localida
     public void Configure(EntityTypeBuilder<Localidad> builder)
     {
         SatCatalogConfiguration.ConfigureColumns(builder, "c_Localidad", 2, 50, true);
-        builder.HasKey("Clave", "Estado");
+        builder.HasKey("Estado", "Clave");
         builder.Property(entity => entity.Estado).HasMaxLength(3);
     }
 }

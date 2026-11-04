@@ -1001,13 +1001,13 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
 
             modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.Colonia", b =>
                 {
-                    b.Property<string>("Clave")
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
-
                     b.Property<string>("CodigoPostal")
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
+
+                    b.Property<string>("Clave")
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -1021,18 +1021,18 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.Property<DateOnly?>("FechaInicioVigencia")
                         .HasColumnType("date");
 
-                    b.HasKey("Clave", "CodigoPostal");
+                    b.HasKey("CodigoPostal", "Clave");
 
                     b.ToTable("c_Colonia", "sat");
                 });
 
             modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.Estado", b =>
                 {
-                    b.Property<string>("Clave")
+                    b.Property<string>("Pais")
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
-                    b.Property<string>("Pais")
+                    b.Property<string>("Clave")
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
@@ -1048,7 +1048,7 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.Property<DateOnly?>("FechaInicioVigencia")
                         .HasColumnType("date");
 
-                    b.HasKey("Clave", "Pais");
+                    b.HasKey("Pais", "Clave");
 
                     b.ToTable("c_Estado", "sat");
                 });
@@ -1185,13 +1185,13 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
 
             modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.Localidad", b =>
                 {
-                    b.Property<string>("Clave")
-                        .HasMaxLength(2)
-                        .HasColumnType("nvarchar(2)");
-
                     b.Property<string>("Estado")
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("Clave")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -1205,7 +1205,7 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.Property<DateOnly?>("FechaInicioVigencia")
                         .HasColumnType("date");
 
-                    b.HasKey("Clave", "Estado");
+                    b.HasKey("Estado", "Clave");
 
                     b.ToTable("c_Localidad", "sat");
                 });
@@ -1311,11 +1311,11 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
 
             modelBuilder.Entity("DanmaobCfdi.Catalogs.Cfdi40.Municipio", b =>
                 {
-                    b.Property<string>("Clave")
+                    b.Property<string>("Estado")
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
-                    b.Property<string>("Estado")
+                    b.Property<string>("Clave")
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
@@ -1331,7 +1331,7 @@ namespace DanmaobCfdi.Catalogs.Persistence.Migrations
                     b.Property<DateOnly?>("FechaInicioVigencia")
                         .HasColumnType("date");
 
-                    b.HasKey("Clave", "Estado");
+                    b.HasKey("Estado", "Clave");
 
                     b.ToTable("c_Municipio", "sat");
                 });

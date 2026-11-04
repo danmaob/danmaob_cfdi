@@ -9,7 +9,7 @@ internal sealed class EstadoConfiguration : IEntityTypeConfiguration<Estado>
     public void Configure(EntityTypeBuilder<Estado> builder)
     {
         SatCatalogConfiguration.ConfigureColumns(builder, "c_Estado", 3, 50, true);
-        builder.HasKey("Clave", "Pais");
+        builder.HasKey("Pais", "Clave");
         builder.Property(entity => entity.Pais).HasMaxLength(3);
     }
 }
