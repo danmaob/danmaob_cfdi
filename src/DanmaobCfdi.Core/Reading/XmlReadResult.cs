@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DanmaobCfdi.Core.Reading.Cancelacion;
 using DanmaobCfdi.Core.Reading.Cfdi40;
 
 namespace DanmaobCfdi.Core.Reading;
@@ -21,4 +22,6 @@ public sealed class XmlReadResult
     public IReadOnlyList<StructuralError> StructuralErrors { get; internal init; } = Array.Empty<StructuralError>();
 
     public RejectionReason? RejectionReason { get; internal init; }
+
+    public CancelacionData? Cancelacion { get; internal init; }
 }

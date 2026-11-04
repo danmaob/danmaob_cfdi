@@ -54,7 +54,8 @@ Las pruebas nunca se conectan a la base de datos ni a un PAC. Las pruebas contra
 ## Distribución por copia
 
 - Cada entrega es una etiqueta `vX.Y.Z` en `main`, con versión semántica (ADR-02).
-- El producto recibe el contenido de `src/` de esa etiqueta en una carpeta `DanmaobCfdi/` junto a su solución, y agrega a su solución los proyectos que use.
+- El producto recibe el contenido de `src/` de esa etiqueta en una carpeta `DanmaobCfdi/` junto a su solución. `tools/copia/reemplazar-copia.sh` hace la primera importación y cada reemplazo; el procedimiento está en [docs/procedimientos/reemplazo-de-copia.md](docs/procedimientos/reemplazo-de-copia.md).
+- El contrato público de cada versión, para el equipo del producto, está en [src/GUIA-DE-USO.md](src/GUIA-DE-USO.md). Viaja con la copia, así que cada producto tiene la guía de la versión que importó.
 - Una versión con sufijo `-dev` nunca se entrega a un producto.
 - Las migraciones del esquema `sat`, incluidos los datos de catálogos, viajan con la copia. El producto las aplica como paso explícito de su despliegue; el componente nunca las aplica al arrancar.
 
@@ -77,3 +78,5 @@ Ningún certificado, llave, contraseña ni credencial real entra al repositorio.
 | [ADR-05](docs/adr/ADR-05-lectura-xml-terceros.md) | Lectura y validación estructural de XML de terceros |
 | [ADR-06](docs/adr/ADR-06-catalogos-modelo-datos.md) | Catálogos: modelo de datos, migraciones y acceso |
 | [ADR-07](docs/adr/ADR-07-catalogos-carga.md) | Catálogos: proceso de carga desde los archivos del SAT |
+| [ADR-08](docs/adr/ADR-08-sellado-csd.md) | Sellado y manejo del CSD |
+| [ADR-09](docs/adr/ADR-09-comprobante-calculos-validacion.md) | Modelo del comprobante, cálculos fiscales y validación previa al timbrado |

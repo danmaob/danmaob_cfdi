@@ -62,14 +62,13 @@ Viven en `tests/DanmaobCfdi.Tests/Fixtures/`:
 
 | Carpeta | Contenido |
 | --- | --- |
-| `Cfdi40/` | CFDI 4.0, con o sin impuestos locales y leyendas fiscales |
-| `Pagos20/` | CFDI con complemento de pagos 2.0 |
-| `CartaPorte31/` | CFDI con complemento Carta Porte 3.1 |
-| `Retenciones20/` | Comprobantes de Retenciones 2.0 |
-| `Cancelacion/` | Acuses de cancelación |
+| `Cfdi40/` | CFDI 4.0 reales, generados y sellados, incluidos los que llevan complemento de pagos 2.0 (`pago-parcialidad`) o Carta Porte 3.1 (`ingreso-cartaporte`), y uno con extensiones fuera del alcance |
+| `Deteccion/` | XML mínimos para la detección de tipo y versión, que no necesitan pasar el XSD |
+| `Cancelacion/` | Acuses de cancelación, válidos e inválidos, y la respuesta SOAP completa |
 | `NoSoportados/` | Versiones que la lectura debe reportar como no soportadas (por ejemplo CFDI 3.3 o Carta Porte 3.0) |
-| `Invalidos/` | XML mal formado, con DTD o con entidades externas, y XML que no pasa el XSD |
+| `Invalidos/` | XML mal formado, con DTD o con entidades externas, con codificación no admitida, y XML que no pasa el XSD |
 | `Csd/` | CSD públicos de pruebas del SAT (sección 5) |
+| `Retenciones20/` | Comprobantes de Retenciones 2.0 (se crea con la emisión de retenciones) |
 
 - Cada caso usa un mismo nombre base: `<caso>.xml`, `<caso>.cadena.txt` y `<caso>.sello.txt`, según lo que aplique.
 - Se copian a la carpeta de salida de las pruebas; no se incrustan.
@@ -168,3 +167,9 @@ DEV JR nunca crea ni edita archivos de `Fixtures/`; los prompts solo le dan su r
 - TS-01-6: proyecto de pruebas con archivos de referencia y prueba real de cadena original.
 - SP-02-1 y SP-08-1, que parten de esta estrategia para la lectura y el sellado.
 - TS-01-1, que fija las versiones de los paquetes de pruebas.
+
+## Historial de cambios
+
+| Fecha | Cambio |
+| --- | --- |
+| 3 de noviembre de 2026 | Corrección por TS-13-1: la tabla de la sección 3 se ajusta a las carpetas reales de `Fixtures/`. Los CFDI con complemento de pagos 2.0 o Carta Porte 3.1 viven en `Cfdi40/`, porque el generador de referencias produce un CFDI completo, así que no existen `Pagos20/` ni `CartaPorte31/`; se agrega `Deteccion/`, y `Retenciones20/` queda para la emisión de retenciones. La prueba integral de la lectura (`LecturaIntegralTests`) recorre todos los XML de estas carpetas, salvo `Csd/` |

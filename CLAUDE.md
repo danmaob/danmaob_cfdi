@@ -274,7 +274,7 @@ DANMAOB_CFDI is the fiscal component of DANMAOB: a .NET 10 class library, withou
 - `DocumentDetector` (`internal sealed`, without state, not registered in dependency injection yet) has `public DetectionResult Detect(XDocument document)`. Rules, in this order (ADR-05, section 3):
     - Root `Comprobante`: supported as `Cfdi40` only in `http://www.sat.gob.mx/cfd/4` with version `4.0`; otherwise `Unsupported` with `CfdiVersion` and the detected version. The version is read from `Version`, or from `version` in lowercase when `Version` is missing (CFDI 3.2 and Timbre Fiscal Digital 1.0), or is empty.
     - Children of `cfdi:Complemento` named `CartaPorte`, `Pagos` or `TimbreFiscalDigital` must be in `http://www.sat.gob.mx/CartaPorte31` with `3.1`, `http://www.sat.gob.mx/Pagos20` with `2.0` and `http://www.sat.gob.mx/TimbreFiscalDigital` with `1.1`; otherwise the whole document is `Unsupported` with `ComplementVersion` and the detected version written as local name, a space and version (`CartaPorte 3.0`). The rule uses the local name, never a list of old namespaces.
-    - Other children of `cfdi:Complemento` whose namespace is not Carta Porte 3.1, Pagos 2.0, Timbre Fiscal Digital, `http://www.sat.gob.mx/implocal` or `http://www.sat.gob.mx/leyendasFiscales` are listed in `UnreadComplements`. `cfdi:Addenda` is never inspected.
+    - Other children of `cfdi:Complemento` whose namespace is not Carta Porte 3.1, Pagos 2.0 or Timbre Fiscal Digital are listed in `UnreadComplements`, including `http://www.sat.gob.mx/implocal` and `http://www.sat.gob.mx/leyendasFiscales` since TS-10-4 (section 35). `cfdi:Addenda` is never inspected.
     - Root `Retenciones` in any namespace: `Unsupported` with `Retenciones`. Root `Cancelacion` in `http://cancelacfd.sat.gob.mx`: supported as `CancellationAcknowledgment` (its verification arrives with TS-02-9). Anything else: `Unrecognized`.
 - Detection runs before validation and never validates: a document that is not supported is never validated.
 - Fixtures of this area are synthetic and minimal, copied by the user's script and never edited. They are NOT valid against the XSD on purpose: `Fixtures/Deteccion/` (`cfdi40-cartaporte31.xml`, `acuse-cancelacion.xml`, `cancelacion-otro-namespace.xml`, `no-reconocido.xml`) and `Fixtures/NoSoportados/` (`cfdi33.xml`, `cfdi32.xml`, `cartaporte30.xml`, `pagos10.xml`, `tfd10.xml`, `retenciones20.xml`). Never use them in validation or extraction tests.
@@ -374,3 +374,67 @@ DANMAOB_CFDI is the fiscal component of DANMAOB: a .NET 10 class library, withou
     - `c_FraccionArancelaria` 10/2000 (the only description of 2000): `UMT` (2).
 - With this migration all 57 CFDI 4.0, Carta Porte 3.1 and tariff catalogs have their table; the 4 Retenciones 2.0 catalogs remain.
 - `tests/DanmaobCfdi.Tests/Catalogs/CartaPorte31/OwnStructureCartaPorteCatalogModelTests.cs` checks the fourteen tables, including `c_FraccionArancelaria`.
+
+## 29. Carta Porte 3.1: locations and goods (verified)
+
+- `src/DanmaobCfdi.Core/Reading/CartaPorte31/`, namespace `DanmaobCfdi.Core.Reading.CartaPorte31`, `public sealed` classes, every property `{ get; internal init; }` with the exact SAT names:
+    - `DomicilioData`: `Calle`, `NumeroExterior`, `NumeroInterior`, `Colonia`, `Localidad`, `Referencia` and `Municipio` (`string?`), and `Estado`, `Pais` and `CodigoPostal` (`string`). Keys are kept as written in the document, without catalog descriptions (D-38). TS-02-8 reuses it for the transport figures.
+    - `UbicacionData`: `TipoUbicacion`, `IDUbicacion?`, `RFCRemitenteDestinatario`, `NombreRemitenteDestinatario?`, `NumRegIdTrib?`, `ResidenciaFiscal?`, `FechaHoraSalidaLlegada` (`DateTime` without time zone), `DistanciaRecorrida` (`decimal?`) and `Domicilio` (`DomicilioData?`).
+    - `MercanciaData`: `BienesTransp`, `Descripcion`, `Cantidad` (`decimal`), `ClaveUnidad`, `Unidad?`, `MaterialPeligroso?` (the SAT text `Sí` or `No`, as written), `CveMaterialPeligroso?`, `Embalaje?`, `PesoEnKg` (`decimal`), `ValorMercancia` (`decimal?`), `Moneda?` and `FraccionArancelaria?`.
+    - `MercanciasData`: `PesoBrutoTotal` (`decimal`), `UnidadPeso`, `PesoNetoTotal` (`decimal?`), `NumTotalMercancias` (`int`) and `Mercancias` (`IReadOnlyList<MercanciaData>`).
+    - `CartaPorteData`: `Version`, `IdCCP`, `TranspInternac`, `EntradaSalidaMerc?`, `PaisOrigenDestino?`, `ViaEntradaSalida?`, `TotalDistRec` (`decimal?`), `Ubicaciones` (`IReadOnlyList<UbicacionData>`) and `Mercancias` (`MercanciasData`, a new empty instance by default).
+- `CartaPorte31Extractor` (`internal static`): `internal static CartaPorteData? Extract(XElement comprobante)` reads the `cartaporte31:CartaPorte` child of `cfdi:Complemento` and returns `null` when there is none; its private methods are `ReadUbicacion`, `ReadDomicilio`, `ReadMercancias` and `ReadMercancia`. `NumTotalMercancias` is parsed with `int.Parse` and `CultureInfo.InvariantCulture`.
+- Outside the model on purpose: `RegimenesAduaneros`, the Istmo attributes (`RegistroISTMO`, `UbicacionPoloOrigen`, `UbicacionPoloDestino`), the station attributes of a location (`NumEstacion`, `NombreEstacion`, `NavegacionTrafico`, `TipoEstacion`), and in each good `DocumentacionAduanera`, `GuiasIdentificacion`, `CantidadTransporta`, `DetalleMercancia`, `Dimensiones`, `DescripEmbalaje` and the COFEPRIS data. The means of transport and `FiguraTransporte` belong to TS-02-8. Adding them later is a compatible change.
+- `ComprobanteData.CartaPorte` (`CartaPorteData?`) is the last property of `ComprobanteData`, after `Pagos`, and `Cfdi40Extractor` fills it with `CartaPorte31Extractor.Extract(root)`.
+- Fixture `Fixtures/Cfdi40/ingreso-cartaporte.xml` (template `tools/fixtures/plantillas/Cfdi40/ingreso-cartaporte.xml`): a freight CFDI of type `I` with Carta Porte 3.1 by road (`T3S2` with one trailer and one operator), an origin in Guanajuato and a destination in Nuevo León (780.5 km), two goods (general hardware, and gasoline `1203` as hazardous material in `1A1` drums) and a synthetic stamp. It already carries the data that TS-02-8 reads.
+- `tests/DanmaobCfdi.Tests/Core/Reading/CartaPorte31/CartaPorte31ExtractorTests.cs` extracts the fixture through `SecureXmlLoader` and reads it through `IThirdPartyXmlReader`.
+
+## 30. Carta Porte 3.1: road transport and transport figures (verified)
+
+- Same folder, namespace and shape as section 29 (`public sealed`, `{ get; internal init; }`, exact SAT names):
+    - `AutotransporteData`: `PermSCT`, `NumPermisoSCT`, `IdentificacionVehicular` (`IdentificacionVehicularData`, a new empty instance by default), `Seguros` (`SegurosData`, a new empty instance by default) and `Remolques` (`IReadOnlyList<RemolqueData>`, at most two in the SAT schema).
+    - `IdentificacionVehicularData`: `ConfigVehicular`, `PesoBrutoVehicular` (`decimal`), `PlacaVM` and `AnioModeloVM` (`int`).
+    - `SegurosData`: `AseguraRespCivil` and `PolizaRespCivil` (`string`), `AseguraMedAmbiente`, `PolizaMedAmbiente`, `AseguraCarga` and `PolizaCarga` (`string?`) and `PrimaSeguro` (`decimal?`).
+    - `RemolqueData`: `SubTipoRem` and `Placa`.
+    - `TiposFiguraData`: `TipoFigura`, `RFCFigura?`, `NumLicencia?`, `NombreFigura`, `NumRegIdTribFigura?`, `ResidenciaFiscalFigura?`, `PartesTransporte` (`IReadOnlyList<string>` with the `ParteTransporte` keys, empty by default) and `Domicilio` (`DomicilioData?`, the same class as the locations).
+- `MercanciasData.Autotransporte` (`AutotransporteData?`, `null` when the goods travel by another means) is the last property of `MercanciasData`; `CartaPorteData.FiguraTransporte` (`IReadOnlyList<TiposFiguraData>`, empty by default) is the last property of `CartaPorteData`.
+- `CartaPorte31Extractor` gained the private methods `ReadAutotransporte`, `ReadIdentificacionVehicular`, `ReadSeguros`, `ReadRemolque`, `ReadFiguraTransporte` and `ReadTiposFigura`, after `ReadMercancia`. `Extract` assigns `FiguraTransporte` and `ReadMercancias` assigns `Autotransporte`, each as the last assignment of its initializer. `AnioModeloVM` is parsed with `int.Parse` and `CultureInfo.InvariantCulture`.
+- Outside the model: `TransporteMaritimo`, `TransporteAereo` and `TransporteFerroviario`. A Carta Porte by any of those means is still read, with `Autotransporte` in `null`.
+- `tests/DanmaobCfdi.Tests/Core/Reading/CartaPorte31/CartaPorte31TransportTests.cs` reads the vehicle, the insurance, the trailer and the operator of `Fixtures/Cfdi40/ingreso-cartaporte.xml`.
+
+## 31. Cancellation acknowledgment (verified)
+
+- `src/DanmaobCfdi.Core/Reading/Cancelacion/`, namespace `DanmaobCfdi.Core.Reading.Cancelacion` (ADR-05, section 4, with its precision of 3 November 2026):
+    - `CancelacionData` (`public sealed`, `{ get; internal init; }`): `RfcEmisor` (`string`), `Fecha` (`DateTime` without time zone) and `Folios` (`IReadOnlyList<FolioData>`).
+    - `FolioData`: `UUID` and `UUIDEstatus` (`string`), `UUIDdescripcion` (`string?`) and `UUIDfecha` (`DateTime?`), with the exact casing of the acknowledgment. Status codes and descriptions are delivered as written, never interpreted.
+    - `CancelacionVerifier` (`internal static`): `internal static IReadOnlyList<StructuralError> Verify(XDocument document)` applies the rules of ADR-05, section 4, and returns every error with its line and position. Messages are fixed Spanish texts without document values.
+    - `CancelacionExtractor` (`internal static`): `internal static CancelacionData Extract(XDocument document)` trims every value; it is called only after `Verify` returned no errors, so its date parsing never fails.
+    - Both classes keep their own `FechaFormat` constant (`yyyy-MM-dd'T'HH:mm:ss`) and their own `AcuseNs` field (`http://cancelacfd.sat.gob.mx`). `Signature`, in any form, and any element or attribute not in the rules are ignored.
+- `XmlReadResult.Cancelacion` (`CancelacionData?`) is its last property. `ThirdPartyXmlReader` sends the acknowledgment to its private method `ReadCancelacion`, which returns `Invalid` with the errors or `Read` with `Cancelacion`. Neither class is registered in the service collection.
+- The full SOAP response of `fnCancelarXML20` stays `Unrecognized`: the component never parses XML embedded in a `CDATA`.
+- Fixtures in `Fixtures/Cancelacion/` (written by Claude, copied by a step of Luis): `acuse-pax.xml` (the shape of PAX's example, with extra spaces, two folios and a text signature), `acuse-firma-xml.xml` (an XML signature block and unknown elements), `acuse-sin-folios.xml`, `acuse-valores-invalidos.xml` and `respuesta-soap.xml`.
+- `tests/DanmaobCfdi.Tests/Core/Reading/Cancelacion/CancelacionReadingTests.cs` reads them through `IThirdPartyXmlReader` and calls `CancelacionVerifier.Verify` directly once.
+
+## 32. CFDI_Lectura: integral test and release status (verified)
+
+- `tests/DanmaobCfdi.Tests/Core/Reading/LecturaIntegralTests.cs` has one `[Theory]`, `Read_ReferenceFixture_ReturnsExpectedStatusAndKind`, with one `[InlineData]` per reading fixture (31): folder, file name, expected `XmlReadStatus` and expected `DocumentKind?` (`null` for `Rejected`, `Unsupported` and `Unrecognized`). It also checks that `StructuralErrors` is filled only for `Invalid`, `Cfdi` only for a read CFDI and `Cancelacion` only for a read acknowledgment.
+- Every new reading fixture adds its row to that theory in the same package; `Csd/` and the `.cadena.txt` and `.sello.txt` files are not part of it.
+- `ThirdPartyXmlReaderTests.Read_CancellationAcknowledgment_ReturnsReadWithCancelacion` (renamed from `..._ReturnsReadWithoutModel`) also checks that `Cancelacion` is not null.
+- Open defects of `CFDI_Lectura` at the close of TS-13-1: none. Pending outside the code: the shape of a real cancellation acknowledgment of the first client (ADR-05, precision of 3 November 2026) and real third-party XML of that client, to be tried when the TMS integrates the release (TS-10-4).
+
+## 33. Copy replacement tools (verified)
+
+- `tools/copia/reemplazar-copia.sh` imports or replaces the component copy (`DanmaobCfdi/`, the content of `src/` at a release tag) in a product solution, and `tools/copia/probar-reemplazo.sh` tests it in a temporary folder (ADR-02, section 5, precision of 3 November 2026). Procedure in Spanish: `docs/procedimientos/reemplazo-de-copia.md`.
+- Both scripts belong to Claude and are run only by Luis. Never open, edit, run or reformat anything under `tools/copia/` or `docs/procedimientos/`.
+- They read `<Version>` from `src/Directory.Build.props`: keep that property on a single line with that exact form, because the scripts depend on it.
+
+## 34. Public contract guide (verified)
+
+- `src/GUIA-DE-USO.md` (Spanish) is the guide of the public contract for the teams of the products. It lives in `src/`, so it travels with every copy and always matches the version imported.
+- It belongs to Claude, like the ADRs and this file. Never open, edit or reformat it.
+- Every package that changes the public contract (a public type, member, registration method or the meaning of a result) updates the guide in a step of Luis, and the step checks that every identifier the guide names exists in `src/`. Version 1.0.0 (`CFDI_Lectura`) covers only the third-party XML reading.
+
+## 35. Local taxes and fiscal legends are unread complements (verified)
+
+- `DocumentDetector` treats only Carta Porte 3.1, Pagos 2.0 and Timbre Fiscal Digital as read complements; the constants `ImpuestosLocalesNamespace` and `LeyendasFiscalesNamespace` no longer exist. A CFDI with `implocal:ImpuestosLocales` or `leyendasFisc:LeyendasFiscales` is still validated against their schemas and read, and each of them appears in `UnreadComplements`, in document order (ADR-05, precision of 4 November 2026).
+- Fixture `Fixtures/Cfdi40/ingreso-implocal-leyendas.xml` (template `tools/fixtures/plantillas/Cfdi40/ingreso-implocal-leyendas.xml`): an income CFDI with a 3 % local tax (`ISH`), one fiscal legend and a synthetic stamp. It is a row of `LecturaIntegralTests` and is read by `tests/DanmaobCfdi.Tests/Core/Reading/ComplementosNoLeidosTests.cs`.

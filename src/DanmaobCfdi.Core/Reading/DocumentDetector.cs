@@ -10,8 +10,6 @@ internal sealed class DocumentDetector
     private const string CartaPorteNamespace = "http://www.sat.gob.mx/CartaPorte31";
     private const string PagosNamespace = "http://www.sat.gob.mx/Pagos20";
     private const string TimbreNamespace = "http://www.sat.gob.mx/TimbreFiscalDigital";
-    private const string ImpuestosLocalesNamespace = "http://www.sat.gob.mx/implocal";
-    private const string LeyendasFiscalesNamespace = "http://www.sat.gob.mx/leyendasFiscales";
     private const string CancelacionNamespace = "http://cancelacfd.sat.gob.mx";
 
     private static readonly XName ComplementoName = XName.Get("Complemento", CfdiNamespace);
@@ -103,7 +101,7 @@ internal sealed class DocumentDetector
     {
         string namespaceName = complement.Name.NamespaceName;
 
-        return namespaceName == CartaPorteNamespace || namespaceName == PagosNamespace || namespaceName == TimbreNamespace || namespaceName == ImpuestosLocalesNamespace || namespaceName == LeyendasFiscalesNamespace;
+        return namespaceName == CartaPorteNamespace || namespaceName == PagosNamespace || namespaceName == TimbreNamespace;
     }
 
     private static string ReadVersion(XElement element)

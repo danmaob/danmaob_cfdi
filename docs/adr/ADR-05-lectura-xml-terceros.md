@@ -64,7 +64,7 @@ La detección usa el elemento raíz, su namespace y su atributo `Version`, y los
 
 | Caso | Resultado |
 | --- | --- |
-| CFDI 4.0, con o sin Pagos 2.0, Carta Porte 3.1, Timbre Fiscal Digital 1.1, impuestos locales o leyendas fiscales | Se valida y se lee |
+| CFDI 4.0, con o sin Pagos 2.0, Carta Porte 3.1, Timbre Fiscal Digital 1.1, impuestos locales o leyendas fiscales | Se valida y se lee. Los impuestos locales y las leyendas fiscales no se extraen al modelo y se reportan en `UnreadComplements` |
 | CFDI 4.0 con complementos fuera del alcance (por ejemplo Comercio Exterior o nómina) | Se valida y se lee. Esos complementos no se extraen y se listan como "no leídos" |
 | CFDI 3.3 o anterior | No soportado |
 | CFDI 4.0 con Carta Porte 2.0 o 3.0, con Pagos 1.0 o con otra versión del Timbre Fiscal Digital | No soportado: el documento completo, sin extraer datos (D-28) |
@@ -92,11 +92,12 @@ No existe un XSD oficial del acuse en el juego local. Se valida con una **verifi
 | Elemento | Regla |
 | --- | --- |
 | Raíz | `Cancelacion` en el namespace `http://cancelacfd.sat.gob.mx` |
-| Atributos `RfcEmisor` y `Fecha` | Obligatorios |
+| Atributos `RfcEmisor` y `Fecha` | Obligatorios. `Fecha` con formato `aaaa-mm-ddThh:mm:ss` |
 | `Folios` | Al menos uno |
 | `UUID` y `UUIDEstatus` en cada `Folios` | Obligatorios. `UUID` con formato de UUID |
-| `UUIDdescripcion` y `UUIDfecha` | Opcionales |
-| `Signature` | Se ignora: la lectura no verifica sellos (D-30) |
+| `UUIDdescripcion` y `UUIDfecha` | Opcionales. `UUIDfecha`, si viene, con formato `aaaa-mm-ddThh:mm:ss` |
+| `Signature` | Se ignora en cualquier forma (texto o bloque de firma XML, en cualquier namespace): la lectura no verifica sellos (D-30) |
+| Elementos y atributos no listados | Se ignoran, para que un acuse con datos adicionales se siga leyendo |
 
 - A los valores de esos atributos y elementos se les quitan los espacios al inicio y al final. En UUID, códigos y fechas esto no cambia el significado.
 - El componente entrega el código de estatus y su descripción **tal como vienen**, sin interpretarlos. El producto decide qué hacer con cada código.
@@ -112,7 +113,9 @@ No existe un XSD oficial del acuse en el juego local. Se valida con una **verifi
 
 - El significado definitivo de cada código se confirma con PAX al firmar el nuevo contrato (TK-09-1).
 - Un XML de cancelación con otra raíz o en otro namespace se reporta como no reconocido, sin fallar.
-- Antes del paquete de TS-02-9, Luis comparte los nombres de elementos y atributos de un acuse real del primer cliente, sin valores. Si su forma es distinta, se agrega como segunda variante en ese mismo paquete, sin cambiar el modelo de lectura.
+- Si falla una regla, el resultado es `Invalid` con todos los errores, cada uno con su línea y posición. Los mensajes son textos fijos en español y nunca incluyen valores del documento.
+- La respuesta SOAP completa de `fnCancelarXML20` (con el acuse dentro de un `CDATA`) se reporta como no reconocida: el componente no analiza XML contenido en otro XML.
+- La forma de un acuse real del primer cliente queda pendiente (sección 14 de las instrucciones). Si es distinta, se agrega como segunda variante, sin cambiar el modelo de lectura.
 
 ### 5. Modelo de lectura propio
 
@@ -188,12 +191,12 @@ Toda lectura devuelve un resultado con uno de cinco estados:
 
 - El TMS puede leer los CFDI del cliente desde `CFDI_Lectura`, sin esperar la carga de catálogos ni el diseño de la emisión.
 - Un documento antiguo, desconocido o defectuoso nunca detiene la carga del cliente: cada uno devuelve su propio estado.
-- Las pruebas de lectura usan los archivos de referencia del ADR-04 (`Cfdi40/`, `Pagos20/`, `CartaPorte31/`, `Cancelacion/`, `NoSoportados/` e `Invalidos/`).
+- Las pruebas de lectura usan los archivos de referencia del ADR-04 (`Cfdi40/`, `Deteccion/`, `Cancelacion/`, `NoSoportados/` e `Invalidos/`), y `LecturaIntegralTests` los recorre todos con su estado esperado.
 
 **Lo que exige cuidado:**
 
 - **Namespaces:** los de la sección 3 se confirman contra los XSD locales antes de TS-02-3.
-- **Acuse de cancelación:** la verificación es propia y no oficial. TS-02-9 necesita antes la forma de un acuse real del primer cliente.
+- **Acuse de cancelación:** la verificación es propia y no oficial, construida con la forma del ejemplo de PAX. Falta confirmarla con un acuse real del primer cliente.
 - **Códigos de cancelación:** el producto los interpreta mientras PAX no confirme su significado.
 - **Modelo estable:** después de `1.0.0`, el modelo de lectura solo crece de forma compatible.
 
@@ -214,3 +217,6 @@ Toda lectura devuelve un resultado con uno de cinco estados:
 | --- | --- |
 | 19 de octubre de 2026 | Corrección según la documentación del Web Service de cancelación de PAX: el contexto identifica el acuse como respuesta de `fnCancelarXML20` y registra espacios al inicio y al final de los valores; la sección 4 reemplaza la expectativa equivocada "201 y 202" por la tabla de códigos de PAX (202 significa aceptación en proceso, no cancelado). La decisión no cambia: el componente sigue entregando el código sin interpretarlo |
 | 21 de octubre de 2026 | Precisión por TS-02-2: los `xs:any` de `cfdv40.xsd` (líneas 395, 678 y 688 de la versión local) no declaran `processContents` y son estrictos. Se agregan a la sección 2, punto 3, la regla que ignora los errores dentro de complementos y addendas sin esquema, el límite de 100 errores y el tratamiento del mensaje. Sin esta regla, un CFDI con addenda o con un complemento fuera del alcance resultaría `Invalid`, en contra de la tabla de la sección 3 |
+| 3 de noviembre de 2026 | Precisión por TS-02-9 (opción A de Luis): la lectura del acuse se construye con la forma del ejemplo de la documentación de PAX, sin esperar un acuse real del primer cliente, que queda pendiente. La sección 4 agrega el formato de `Fecha` y `UUIDfecha`, ignora `Signature` en cualquier forma y los elementos y atributos no listados, define el resultado `Invalid` con mensajes fijos sin valores y deja como no reconocida la respuesta SOAP completa. El modelo es `CancelacionData` y `FolioData` en `Reading/Cancelacion`, entregado en `XmlReadResult.Cancelacion` |
+| 3 de noviembre de 2026 | Corrección por TS-13-1: la lista de carpetas de referencia de las consecuencias se ajusta a las reales (no existen `Pagos20/` ni `CartaPorte31/`; se agrega `Deteccion/`) y menciona la prueba integral `LecturaIntegralTests` |
+| 4 de noviembre de 2026 | Precisión por TS-10-4 (antes de publicar la versión 1.0.0): los complementos de impuestos locales y de leyendas fiscales se siguen validando, pero ya no se dan por leídos: como el modelo de lectura no los extrae (D-28), se reportan en `UnreadComplements`, igual que cualquier complemento fuera del alcance. Archivo de referencia `Cfdi40/ingreso-implocal-leyendas` |
