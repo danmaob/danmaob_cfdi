@@ -36,6 +36,10 @@ public sealed class FakeSatCatalogQuery : ISatCatalogQuery
 
     public Task<IReadOnlyList<SatCatalogEntry>> ListAsync(SatCatalog catalog, CancellationToken cancellationToken)
     {
+        if (!SatCatalogRules.IsSmall(catalog))
+        {
+            throw new InvalidOperationException("ListAsync is only for small catalogs.");
+        }
         List<SatCatalogEntry> all = EntriesOf(catalog).OrderBy(entry => entry.Clave, StringComparer.Ordinal).ToList();
         return Task.FromResult<IReadOnlyList<SatCatalogEntry>>(all);
     }
