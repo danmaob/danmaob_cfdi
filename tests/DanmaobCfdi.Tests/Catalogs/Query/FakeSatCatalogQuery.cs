@@ -11,6 +11,8 @@ public sealed class FakeSatCatalogQuery : ISatCatalogQuery
 {
     private readonly Dictionary<SatCatalog, List<SatCatalogEntry>> _entries = new Dictionary<SatCatalog, List<SatCatalogEntry>>();
 
+    private readonly List<SatCodigoPostalEntry> _codigosPostales = new List<SatCodigoPostalEntry>();
+
     public void Add(SatCatalog catalog, SatCatalogEntry entry)
     {
         if (!_entries.ContainsKey(catalog))
@@ -18,6 +20,11 @@ public sealed class FakeSatCatalogQuery : ISatCatalogQuery
             _entries[catalog] = new List<SatCatalogEntry>();
         }
         _entries[catalog].Add(entry);
+    }
+
+    public void AddCodigoPostal(SatCodigoPostalEntry entry)
+    {
+        _codigosPostales.Add(entry);
     }
 
     public Task<SatCatalogEntry?> FindAsync(SatCatalog catalog, string clave, string? clavePadre, CancellationToken cancellationToken)
@@ -56,6 +63,12 @@ public sealed class FakeSatCatalogQuery : ISatCatalogQuery
             return SatCatalogValidity.Valid;
         }
         return SatCatalogValidity.NotValid;
+    }
+
+    public Task<SatCodigoPostalEntry?> FindCodigoPostalAsync(string clave, CancellationToken cancellationToken)
+    {
+        SatCodigoPostalEntry? found = _codigosPostales.FirstOrDefault(entry => entry.Clave == clave);
+        return Task.FromResult<SatCodigoPostalEntry?>(found);
     }
 
     private IEnumerable<SatCatalogEntry> EntriesOf(SatCatalog catalog)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DanmaobCfdi.Catalogs.Cfdi40;
 using DanmaobCfdi.Catalogs.Persistence;
 using DanmaobCfdi.Core.Catalogs;
 using Microsoft.EntityFrameworkCore;
@@ -63,6 +64,13 @@ internal sealed class SatCatalogQuery : ISatCatalogQuery
             return SatCatalogValidity.Valid;
         }
         return SatCatalogValidity.NotValid;
+    }
+
+    public async Task<SatCodigoPostalEntry?> FindCodigoPostalAsync(string clave, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(clave);
+        SatCodigoPostalEntry? found = await _context.Set<CodigoPostal>().AsNoTracking().Where(entity => entity.Clave == clave).Select(entity => new SatCodigoPostalEntry(entity.Clave, entity.Estado, entity.Municipio, entity.Localidad)).FirstOrDefaultAsync(cancellationToken);
+        return found;
     }
 
     private IQueryable<SatCatalogEntity> Filtered(SatCatalog catalog, string? clavePadre)
