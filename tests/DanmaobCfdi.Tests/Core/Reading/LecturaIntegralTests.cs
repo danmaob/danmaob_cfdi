@@ -19,6 +19,7 @@ public sealed class LecturaIntegralTests
     [InlineData("Cfdi40", "pago-parcialidad.xml", XmlReadStatus.Read, DocumentKind.Cfdi40)]
     [InlineData("Cfdi40", "ingreso-cartaporte.xml", XmlReadStatus.Read, DocumentKind.Cfdi40)]
     [InlineData("Cfdi40", "con-extensiones-desconocidas.xml", XmlReadStatus.Read, DocumentKind.Cfdi40)]
+    [InlineData("Cfdi40", "ingreso-implocal-leyendas.xml", XmlReadStatus.Read, DocumentKind.Cfdi40)]
     [InlineData("Cancelacion", "acuse-pax.xml", XmlReadStatus.Read, DocumentKind.CancellationAcknowledgment)]
     [InlineData("Cancelacion", "acuse-firma-xml.xml", XmlReadStatus.Read, DocumentKind.CancellationAcknowledgment)]
     [InlineData("Cancelacion", "acuse-sin-folios.xml", XmlReadStatus.Invalid, DocumentKind.CancellationAcknowledgment)]
