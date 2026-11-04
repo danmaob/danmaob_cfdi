@@ -30,4 +30,18 @@ public static class SatCatalogRules
     {
         return Array.IndexOf(LargeCatalogs, catalog) < 0;
     }
+
+    public static bool IsValidOn(SatCatalogEntry entry, DateOnly date)
+    {
+        ArgumentNullException.ThrowIfNull(entry);
+        if (entry.FechaInicioVigencia > date)
+        {
+            return false;
+        }
+        if (entry.FechaFinVigencia < date)
+        {
+            return false;
+        }
+        return true;
+    }
 }
