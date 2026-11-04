@@ -51,6 +51,20 @@ internal sealed class SatCatalogQuery : ISatCatalogQuery
         return all;
     }
 
+    public async Task<SatCatalogValidity> CheckValidityAsync(SatCatalog catalog, string clave, string? clavePadre, DateOnly date, CancellationToken cancellationToken)
+    {
+        SatCatalogEntry? entry = await FindAsync(catalog, clave, clavePadre, cancellationToken);
+        if (entry is null)
+        {
+            return SatCatalogValidity.NotFound;
+        }
+        if (SatCatalogRules.IsValidOn(entry, date))
+        {
+            return SatCatalogValidity.Valid;
+        }
+        return SatCatalogValidity.NotValid;
+    }
+
     private IQueryable<SatCatalogEntity> Filtered(SatCatalog catalog, string? clavePadre)
     {
         IQueryable<SatCatalogEntity> source = SatCatalogSources.For(_context, catalog).AsNoTracking();

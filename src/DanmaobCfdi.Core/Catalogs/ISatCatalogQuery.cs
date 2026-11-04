@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,4 +12,6 @@ public interface ISatCatalogQuery
     public Task<IReadOnlyList<SatCatalogEntry>> SearchAsync(SatCatalog catalog, string text, string? clavePadre, int limit, CancellationToken cancellationToken);
 
     public Task<IReadOnlyList<SatCatalogEntry>> ListAsync(SatCatalog catalog, CancellationToken cancellationToken);
+
+    public Task<SatCatalogValidity> CheckValidityAsync(SatCatalog catalog, string clave, string? clavePadre, DateOnly date, CancellationToken cancellationToken);
 }

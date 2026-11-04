@@ -44,6 +44,20 @@ public sealed class FakeSatCatalogQuery : ISatCatalogQuery
         return Task.FromResult<IReadOnlyList<SatCatalogEntry>>(all);
     }
 
+    public async Task<SatCatalogValidity> CheckValidityAsync(SatCatalog catalog, string clave, string? clavePadre, DateOnly date, CancellationToken cancellationToken)
+    {
+        SatCatalogEntry? entry = await FindAsync(catalog, clave, clavePadre, cancellationToken);
+        if (entry is null)
+        {
+            return SatCatalogValidity.NotFound;
+        }
+        if (SatCatalogRules.IsValidOn(entry, date))
+        {
+            return SatCatalogValidity.Valid;
+        }
+        return SatCatalogValidity.NotValid;
+    }
+
     private IEnumerable<SatCatalogEntry> EntriesOf(SatCatalog catalog)
     {
         if (_entries.TryGetValue(catalog, out List<SatCatalogEntry>? list))
