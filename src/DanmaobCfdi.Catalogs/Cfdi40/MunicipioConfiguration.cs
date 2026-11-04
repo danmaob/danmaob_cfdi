@@ -9,7 +9,7 @@ internal sealed class MunicipioConfiguration : IEntityTypeConfiguration<Municipi
     public void Configure(EntityTypeBuilder<Municipio> builder)
     {
         SatCatalogConfiguration.ConfigureColumns(builder, "c_Municipio", 3, 100, true);
-        builder.HasKey("Clave", "Estado");
+        builder.HasKey("Estado", "Clave");
         builder.Property(entity => entity.Estado).HasMaxLength(3);
     }
 }

@@ -28,7 +28,7 @@ public sealed class GeographicCatalogModelTests
     {
         ITable table = FindTable("c_Estado");
         IPrimaryKeyConstraint primaryKey = Assert.IsAssignableFrom<IPrimaryKeyConstraint>(table.PrimaryKey);
-        Assert.Equal(new[] { "Clave", "Pais" }, primaryKey.Columns.Select(column => column.Name).ToArray());
+        Assert.Equal(new[] { "Pais", "Clave" }, primaryKey.Columns.Select(column => column.Name).ToArray());
         Assert.Single(table.UniqueConstraints);
         Assert.Equal("nvarchar(3)", FindColumn(table, "Pais").StoreType);
         Assert.Equal("nvarchar(50)", FindColumn(table, "Descripcion").StoreType);
@@ -40,7 +40,7 @@ public sealed class GeographicCatalogModelTests
     {
         ITable table = FindTable("c_Municipio");
         IPrimaryKeyConstraint primaryKey = Assert.IsAssignableFrom<IPrimaryKeyConstraint>(table.PrimaryKey);
-        Assert.Equal(new[] { "Clave", "Estado" }, primaryKey.Columns.Select(column => column.Name).ToArray());
+        Assert.Equal(new[] { "Estado", "Clave" }, primaryKey.Columns.Select(column => column.Name).ToArray());
         Assert.Single(table.UniqueConstraints);
         Assert.Equal("nvarchar(100)", FindColumn(table, "Descripcion").StoreType);
         Assert.Equal(5, table.Columns.Count());
@@ -51,7 +51,7 @@ public sealed class GeographicCatalogModelTests
     {
         ITable table = FindTable("c_Localidad");
         IPrimaryKeyConstraint primaryKey = Assert.IsAssignableFrom<IPrimaryKeyConstraint>(table.PrimaryKey);
-        Assert.Equal(new[] { "Clave", "Estado" }, primaryKey.Columns.Select(column => column.Name).ToArray());
+        Assert.Equal(new[] { "Estado", "Clave" }, primaryKey.Columns.Select(column => column.Name).ToArray());
         Assert.Single(table.UniqueConstraints);
         Assert.Equal("nvarchar(2)", FindColumn(table, "Clave").StoreType);
         Assert.Equal(5, table.Columns.Count());
@@ -62,7 +62,7 @@ public sealed class GeographicCatalogModelTests
     {
         ITable table = FindTable("c_Colonia");
         IPrimaryKeyConstraint primaryKey = Assert.IsAssignableFrom<IPrimaryKeyConstraint>(table.PrimaryKey);
-        Assert.Equal(new[] { "Clave", "CodigoPostal" }, primaryKey.Columns.Select(column => column.Name).ToArray());
+        Assert.Equal(new[] { "CodigoPostal", "Clave" }, primaryKey.Columns.Select(column => column.Name).ToArray());
         Assert.Single(table.UniqueConstraints);
         Assert.Equal("nvarchar(5)", FindColumn(table, "CodigoPostal").StoreType);
         Assert.Equal("Latin1_General_100_CI_AI", FindColumn(table, "Descripcion").Collation);
