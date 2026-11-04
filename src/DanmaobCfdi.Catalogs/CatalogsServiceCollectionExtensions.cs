@@ -13,6 +13,7 @@ public static class CatalogsServiceCollectionExtensions
         ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
         services.AddDbContext<SatDbContext>(builder => SatDbContextOptions.Configure(builder, connectionString));
         services.AddScoped<ISatCatalogQuery, SatCatalogQuery>();
+        services.AddScoped<SatAddressRelations>();
         return services;
     }
 }
