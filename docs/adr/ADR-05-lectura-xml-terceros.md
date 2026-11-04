@@ -64,7 +64,7 @@ La detección usa el elemento raíz, su namespace y su atributo `Version`, y los
 
 | Caso | Resultado |
 | --- | --- |
-| CFDI 4.0, con o sin Pagos 2.0, Carta Porte 3.1, Timbre Fiscal Digital 1.1, impuestos locales o leyendas fiscales | Se valida y se lee |
+| CFDI 4.0, con o sin Pagos 2.0, Carta Porte 3.1, Timbre Fiscal Digital 1.1, impuestos locales o leyendas fiscales | Se valida y se lee. Los impuestos locales y las leyendas fiscales no se extraen al modelo y se reportan en `UnreadComplements` |
 | CFDI 4.0 con complementos fuera del alcance (por ejemplo Comercio Exterior o nómina) | Se valida y se lee. Esos complementos no se extraen y se listan como "no leídos" |
 | CFDI 3.3 o anterior | No soportado |
 | CFDI 4.0 con Carta Porte 2.0 o 3.0, con Pagos 1.0 o con otra versión del Timbre Fiscal Digital | No soportado: el documento completo, sin extraer datos (D-28) |
@@ -219,3 +219,4 @@ Toda lectura devuelve un resultado con uno de cinco estados:
 | 21 de octubre de 2026 | Precisión por TS-02-2: los `xs:any` de `cfdv40.xsd` (líneas 395, 678 y 688 de la versión local) no declaran `processContents` y son estrictos. Se agregan a la sección 2, punto 3, la regla que ignora los errores dentro de complementos y addendas sin esquema, el límite de 100 errores y el tratamiento del mensaje. Sin esta regla, un CFDI con addenda o con un complemento fuera del alcance resultaría `Invalid`, en contra de la tabla de la sección 3 |
 | 3 de noviembre de 2026 | Precisión por TS-02-9 (opción A de Luis): la lectura del acuse se construye con la forma del ejemplo de la documentación de PAX, sin esperar un acuse real del primer cliente, que queda pendiente. La sección 4 agrega el formato de `Fecha` y `UUIDfecha`, ignora `Signature` en cualquier forma y los elementos y atributos no listados, define el resultado `Invalid` con mensajes fijos sin valores y deja como no reconocida la respuesta SOAP completa. El modelo es `CancelacionData` y `FolioData` en `Reading/Cancelacion`, entregado en `XmlReadResult.Cancelacion` |
 | 3 de noviembre de 2026 | Corrección por TS-13-1: la lista de carpetas de referencia de las consecuencias se ajusta a las reales (no existen `Pagos20/` ni `CartaPorte31/`; se agrega `Deteccion/`) y menciona la prueba integral `LecturaIntegralTests` |
+| 4 de noviembre de 2026 | Precisión por TS-10-4 (antes de publicar la versión 1.0.0): los complementos de impuestos locales y de leyendas fiscales se siguen validando, pero ya no se dan por leídos: como el modelo de lectura no los extrae (D-28), se reportan en `UnreadComplements`, igual que cualquier complemento fuera del alcance. Archivo de referencia `Cfdi40/ingreso-implocal-leyendas` |

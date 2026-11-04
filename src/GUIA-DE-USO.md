@@ -122,7 +122,7 @@ Se leen: CFDI 4.0 con Timbre Fiscal Digital 1.1, Pagos 2.0 y Carta Porte 3.1, y 
 
 Un CFDI 4.0 con un complemento que la lectura no modela (por ejemplo, Comercio Exterior) se lee igual, con estado `Read`. Cada complemento no leído aparece en `UnreadComplements` con su `NamespaceName` y su `LocalName`, para que el producto decida si lo acepta. La addenda se ignora.
 
-Los complementos de impuestos locales y de leyendas fiscales no aparecen en `UnreadComplements`, pero la versión 1.0.0 tampoco los extrae al modelo.
+Los complementos de impuestos locales y de leyendas fiscales se validan contra sus esquemas oficiales, pero la versión 1.0.0 no los extrae al modelo: también aparecen en `UnreadComplements`.
 
 ### 3.4 Errores de estructura (`StructuralError`)
 
